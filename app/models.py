@@ -7,6 +7,7 @@ SQLModel.metadata.create_all() against these models from this backend.
 """
 
 from datetime import date, datetime
+from uuid import UUID
 
 from sqlmodel import Field, SQLModel
 
@@ -14,7 +15,12 @@ from sqlmodel import Field, SQLModel
 class Profile(SQLModel, table=True):
     __tablename__ = "profiles"
 
-    id: str = Field(primary_key=True)
+    # profiles.id is a Postgres `uuid` column (FK to auth.users.id). Must be
+    # the Python `UUID` type, not `str` - a `str` field binds as ::VARCHAR,
+    # which Postgres can't compare against `uuid` (confirmed live: caused a
+    # 500 "operator does not exist: uuid = character varying" on every
+    # /me and /admin/ping call).
+    id: UUID = Field(primary_key=True)
     display_name: str | None = None
     track: str | None = None
     target_band: float | None = None
@@ -32,7 +38,8 @@ class Profile(SQLModel, table=True):
 class UserRole(SQLModel, table=True):
     __tablename__ = "user_roles"
 
-    user_id: str = Field(primary_key=True)
+    # Same `uuid` vs. `str` fix as Profile.id above.
+    user_id: UUID = Field(primary_key=True)
     role: str = "student"
     created_at: datetime
     updated_at: datetime

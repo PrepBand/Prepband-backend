@@ -1,3 +1,5 @@
+from uuid import UUID
+
 from fastapi import Depends, HTTPException
 from sqlmodel import Session
 
@@ -10,7 +12,9 @@ def get_current_role(
     user_id: str = Depends(get_current_user_id),
     session: Session = Depends(get_session),
 ) -> str:
-    role_row = session.get(UserRole, user_id)
+    # UserRole.user_id is typed UUID (see models.py); user_id here is the
+    # JWT `sub` claim as a plain str and must be parsed before querying.
+    role_row = session.get(UserRole, UUID(user_id))
     return role_row.role if role_row else "student"
 
 
