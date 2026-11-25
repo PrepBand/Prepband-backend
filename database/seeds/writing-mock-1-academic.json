@@ -1,0 +1,39 @@
+{
+  "format": "prepband-test/v1",
+  "title": "Academic Writing Mock Test 1",
+  "module": "writing",
+  "track": "academic",
+  "kind": "mock",
+  "difficulty": "intermediate",
+  "duration_minutes": 60,
+  "sections": [
+    {
+      "module": "writing",
+      "instructions": "You have 60 minutes for both tasks. Spend about 20 minutes on Task 1 and 40 minutes on Task 2. Task 2 counts for more, so don't run over on Task 1.",
+      "timing_seconds": 3600,
+      "writing_prompts": [
+        {
+          "task_number": 1,
+          "prompt": "The table below shows the percentage of journeys to work made by four types of transport in one city in 2004 and 2024. Summarise the information by selecting and reporting the main features, and make comparisons where relevant.",
+          "instructions": "Write at least 150 words. You don't need to give your opinion.",
+          "min_words": 150,
+          "recommended_minutes": 20,
+          "visual": {
+            "caption": "Journeys to work by type of transport, 2004 and 2024 (% of all journeys)",
+            "columns": ["Transport", "2004", "2024"],
+            "rows": [["Car", "58%", "41%"], ["Bus", "22%", "19%"], ["Bicycle", "6%", "21%"], ["Walking", "14%", "19%"]]
+          },
+          "examiner_notes": "A strong answer opens with an overview of the main trends: car use fell sharply but stayed the most common way to travel, while cycling more than tripled to become the second most popular. It supports this with selected figures and groups the smaller changes (bus and walking) instead of listing every number. No opinion or explanation of causes is needed."
+        },
+        {
+          "task_number": 2,
+          "prompt": "Some people believe that cities should ban private cars from their central areas. Others think this would cause more problems than it solves. Discuss both views and give your own opinion.",
+          "instructions": "Write at least 250 words. Give reasons for your answer and include relevant examples from your own knowledge or experience.",
+          "min_words": 250,
+          "recommended_minutes": 40,
+          "examiner_notes": "A strong answer develops both views (for example, cleaner air and safer streets versus access for disabled people, deliveries and businesses), states a clear position, and keeps that position consistent through to the conclusion. Each body paragraph has one main idea supported by an explanation or example."
+        }
+      ]
+    }
+  ]
+}

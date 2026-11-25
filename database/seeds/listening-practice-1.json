@@ -1,0 +1,64 @@
+{
+  "format": "prepband-test/v1",
+  "title": "Listening Practice: Joining a Cookery Course",
+  "module": "listening",
+  "track": "both",
+  "kind": "practice",
+  "difficulty": "foundation",
+  "duration_minutes": 12,
+  "sections": [
+    {
+      "module": "listening",
+      "instructions": "Questions 1-6: complete the form. Write ONE WORD AND/OR A NUMBER for each answer. Questions 7-10: choose the correct answer.",
+      "timing_seconds": 720,
+      "media_assets": [
+        {
+          "type": "audio",
+          "local_file": "audio/listening-practice-1.wav",
+          "attribution": "Original Prepband script, synthesized speech.",
+          "license": "CC BY 4.0",
+          "transcript": [
+            "NARRATOR: You will hear a man phoning a cookery school to enrol on a course. First, look at questions 1 to 6.",
+            "AGENT: Hello, Riverside Cookery School. This is Grace.",
+            "CALLER: Hi, Grace. I saw your advert for weekend courses and I'd like to sign up for one.",
+            "AGENT: Great. Which course were you interested in?",
+            "CALLER: I was looking at the bread-making one, but I think I'd get more out of the Italian course. Pasta and sauces.",
+            "AGENT: Italian it is. Can I take your full name?",
+            "CALLER: Sam Okafor. O, K, A, F, O, R.",
+            "AGENT: Thank you. And your email address?",
+            "CALLER: It's sam dot okafor at mailbox dot com.",
+            "AGENT: Got it. The Italian course runs on two dates this month: the ninth or the twenty-third.",
+            "CALLER: I'm away on the ninth, so the twenty-third, please.",
+            "AGENT: The twenty-third. The course starts at half past nine and finishes at about four. The full price is eighty-five pounds, but if you're a student it's sixty-five.",
+            "CALLER: I'm not a student any more, unfortunately, so the full price.",
+            "AGENT: No problem. Do you have any allergies we should know about?",
+            "CALLER: Yes, I'm allergic to nuts. Not dairy or anything else, just nuts.",
+            "AGENT: I'll make a note of that for the chef.",
+            "NARRATOR: Now look at questions 7 to 10.",
+            "CALLER: Is there anything I need to bring?",
+            "AGENT: We provide all the ingredients and equipment, and aprons. The only thing we ask is that you bring a container to take your food home in.",
+            "CALLER: Easy enough. How many people are usually in a group?",
+            "AGENT: We take a maximum of ten, but this one has eight booked so far, including you.",
+            "CALLER: And is lunch included?",
+            "AGENT: It is. You'll eat what you make in the morning session, so it's a working lunch.",
+            "CALLER: Perfect. Is there parking at the school?",
+            "AGENT: There's no car park, I'm afraid, and the street parking is only for residents. Most people come by train. The station is a five-minute walk.",
+            "CALLER: I'll take the train, then. Thanks for your help."
+          ]
+        }
+      ],
+      "questions": [
+        {"type": "form_completion", "prompt": "Course chosen: ___", "marks": 1, "answer": {"correct_answers": ["Italian"], "rationale": "He considered bread-making but chose the Italian course."}},
+        {"type": "form_completion", "prompt": "Surname: ___", "marks": 1, "answer": {"correct_answers": ["Okafor"], "rationale": "Spelled O-K-A-F-O-R."}},
+        {"type": "form_completion", "prompt": "Course date: ___ (day of the month)", "marks": 1, "answer": {"correct_answers": ["23"], "accepted_aliases": ["23rd", "twenty-third", "twenty third"], "rationale": "He is away on the ninth, so chooses the twenty-third."}},
+        {"type": "form_completion", "prompt": "Start time: ___", "marks": 1, "answer": {"correct_answers": ["9.30"], "accepted_aliases": ["9:30", "half past nine", "9.30am", "9:30am", "0930"], "rationale": "'The course starts at half past nine.'"}},
+        {"type": "form_completion", "prompt": "Price to pay: £___", "marks": 1, "answer": {"correct_answers": ["85"], "accepted_aliases": ["eighty-five", "eighty five", "£85"], "rationale": "He is no longer a student, so he pays the full £85."}},
+        {"type": "form_completion", "prompt": "Allergy: ___", "marks": 1, "answer": {"correct_answers": ["nuts"], "accepted_aliases": ["nut"], "rationale": "'I'm allergic to nuts... not dairy.'"}},
+        {"type": "multiple_choice", "prompt": "What does Sam need to bring?", "options": ["An apron", "A container", "Some ingredients"], "marks": 1, "answer": {"correct_answers": "A container", "rationale": "Everything else is provided; bring a container to take food home."}},
+        {"type": "multiple_choice", "prompt": "How many people have booked the course so far?", "options": ["Eight", "Nine", "Ten"], "marks": 1, "answer": {"correct_answers": "Eight", "rationale": "The maximum is ten; eight are booked so far."}},
+        {"type": "multiple_choice", "prompt": "What is said about lunch?", "options": ["Participants should bring their own.", "It is eaten at a nearby café.", "Participants eat what they cooked."], "marks": 1, "answer": {"correct_answers": "Participants eat what they cooked.", "rationale": "'You'll eat what you make in the morning session.'"}},
+        {"type": "multiple_choice", "prompt": "How will Sam travel to the school?", "options": ["By car", "By train", "On foot from home"], "marks": 1, "answer": {"correct_answers": "By train", "rationale": "There is no parking, so he will take the train."}}
+      ]
+    }
+  ]
+}

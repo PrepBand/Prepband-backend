@@ -1,0 +1,195 @@
+{
+  "format": "prepband-test/v1",
+  "title": "Listening Mock Test 1",
+  "module": "listening",
+  "track": "both",
+  "kind": "mock",
+  "difficulty": "intermediate",
+  "duration_minutes": 40,
+  "sections": [
+    {
+      "module": "listening",
+      "instructions": "Part 1. Questions 1-10. Complete the booking form. Write ONE WORD AND/OR A NUMBER for each answer.",
+      "timing_seconds": 600,
+      "media_assets": [
+        {
+          "type": "audio",
+          "local_file": "audio/listening-mock-1-part-1.wav",
+          "attribution": "Original Prepband script, synthesized speech.",
+          "license": "CC BY 4.0",
+          "transcript": [
+            "NARRATOR: Part 1. You will hear a woman phoning a holiday cottage company to make a booking. First, look at questions 1 to 10.",
+            "AGENT: Good morning, Larchfield Holiday Cottages, Tom speaking. How can I help?",
+            "CALLER: Hi. I'd like to book one of your cottages for a week in the summer, if you still have anything free.",
+            "AGENT: Of course. Let me take a few details first. Can I have your name, please?",
+            "CALLER: It's Anna Delaney. That's D, E, L, A, N, E, Y.",
+            "AGENT: Thank you, Ms Delaney. And the best phone number to reach you on?",
+            "CALLER: My mobile is the easiest. It's 0 7 7 0 0, 9 0 0, 4 1 8.",
+            "AGENT: Lovely. And how many people will be staying?",
+            "CALLER: Well, originally it was going to be six of us, but my brother can't come now, so it'll be five. Two adults and three children.",
+            "AGENT: Five, then. And when were you hoping to arrive?",
+            "CALLER: We were thinking Saturday the seventh of June, but my husband's work has changed, so it'll have to be the following Saturday, the fourteenth.",
+            "AGENT: The fourteenth of June, for seven nights. Let me look. We have two cottages free that week: Kingfisher, which is right in the village, and Heron, which is about a mile outside, near the river.",
+            "CALLER: Which one is bigger?",
+            "AGENT: They both sleep six. Kingfisher is a bit more modern, but Heron is quieter.",
+            "CALLER: Quiet sounds good. We'll go for Heron.",
+            "AGENT: Is there anything the cottage must have?",
+            "CALLER: Yes. A dishwasher would be nice, but it isn't essential. What really matters is a garden. The children need somewhere to run around.",
+            "AGENT: Heron has a large one, fully fenced. Will you be bringing any pets?",
+            "CALLER: Just one. A small dog. He's very well behaved.",
+            "AGENT: That's fine. Pets are welcome in Heron, but there's an extra charge. It used to be ten pounds a night, but it's gone up this year to twelve pounds a night.",
+            "CALLER: Twelve. OK, that's fine. How do we get the keys? Is someone there to meet us?",
+            "AGENT: Our office closes at four on Saturdays, so most guests collect them from the post office in the village. It's open until six.",
+            "CALLER: The post office. Great. And how do I pay the deposit? Can I do it by card over the phone?",
+            "AGENT: I'm afraid our card machine is being replaced this month, so at the moment we're only taking bank transfer. I'll email you the details.",
+            "CALLER: No problem. Thanks very much for your help.",
+            "NARRATOR: That is the end of Part 1."
+          ]
+        }
+      ],
+      "questions": [
+        {"type": "form_completion", "prompt": "Name: Anna ___", "marks": 1, "answer": {"correct_answers": ["Delaney"], "rationale": "The caller spells her surname: D-E-L-A-N-E-Y."}},
+        {"type": "form_completion", "prompt": "Mobile number: ___", "marks": 1, "answer": {"correct_answers": ["07700900418"], "accepted_aliases": ["07700 900 418", "07700 900418"], "rationale": "She gives her mobile as 07700 900 418."}},
+        {"type": "form_completion", "prompt": "Number of guests: ___", "marks": 1, "answer": {"correct_answers": ["5"], "accepted_aliases": ["five"], "rationale": "Six were planned, but her brother can't come, so it will be five."}},
+        {"type": "form_completion", "prompt": "Arrival date: ___ June", "marks": 1, "answer": {"correct_answers": ["14"], "accepted_aliases": ["14th", "fourteenth", "fourteen"], "rationale": "The 7th was the original plan; they will now arrive on the 14th."}},
+        {"type": "form_completion", "prompt": "Cottage chosen: ___", "marks": 1, "answer": {"correct_answers": ["Heron"], "rationale": "She chooses Heron because it is quieter."}},
+        {"type": "form_completion", "prompt": "Essential feature: a ___", "marks": 1, "answer": {"correct_answers": ["garden"], "rationale": "A dishwasher 'isn't essential'; what really matters is a garden."}},
+        {"type": "form_completion", "prompt": "Pet: one small ___", "marks": 1, "answer": {"correct_answers": ["dog"], "rationale": "'Just one. A small dog.'"}},
+        {"type": "form_completion", "prompt": "Pet charge: £___ per night", "marks": 1, "answer": {"correct_answers": ["12"], "accepted_aliases": ["twelve", "£12"], "rationale": "It was ten pounds but has gone up to twelve."}},
+        {"type": "form_completion", "prompt": "Collect keys from the ___", "marks": 1, "answer": {"correct_answers": ["post office"], "rationale": "The office closes at four, so guests collect keys from the post office."}},
+        {"type": "form_completion", "prompt": "Deposit payment method: ___", "marks": 1, "answer": {"correct_answers": ["bank transfer"], "accepted_aliases": ["transfer"], "rationale": "The card machine is being replaced, so only bank transfer is accepted."}}
+      ]
+    },
+    {
+      "module": "listening",
+      "instructions": "Part 2. Questions 11-14: choose the correct answer. Questions 15-20: which activity is available at each location? Choose from the list.",
+      "timing_seconds": 600,
+      "media_assets": [
+        {
+          "type": "audio",
+          "local_file": "audio/listening-mock-1-part-2.wav",
+          "attribution": "Original Prepband script, synthesized speech.",
+          "license": "CC BY 4.0",
+          "transcript": [
+            "NARRATOR: Part 2. You will hear a volunteer coordinator talking to new volunteers at a wetland nature reserve. First, look at questions 11 to 14.",
+            "GUIDE: Good morning, everyone, and welcome to Millbrook Wetland Reserve. I'm Ruth, and I coordinate our volunteer team. Before we walk around the site, I'd like to tell you a little about how the reserve came to exist and what you'll be doing here.",
+            "GUIDE: People often assume this was always a natural wetland, but in fact it was a gravel quarry until the late nineteen-eighties. When the quarry closed, the pits slowly filled with rainwater, and it was a group of local schoolteachers, not the council, who first campaigned to protect the area. The council only bought the land some years later.",
+            "GUIDE: Today we have around ninety volunteers. Some of you will help with the bird surveys, but most volunteers, about two thirds, actually spend their time on habitat work: cutting back willow and clearing ditches. It's hard work, but it's what keeps the wetland from turning into woodland.",
+            "GUIDE: You don't need any experience. We do ask everyone to attend a short safety briefing before their first session. It used to be a full day, but we've reduced it to two hours, and it's held every Monday morning.",
+            "GUIDE: The reserve is open every day except Christmas Day. Entry is free, although we do encourage visitors to make a donation. Parking is the only thing we charge for, and that money goes straight back into conservation.",
+            "NARRATOR: Now look at questions 15 to 20.",
+            "GUIDE: Now let me explain what visitors can do in different parts of the reserve, because they'll often ask you. Starting here at the Visitor Centre, this is where families come for pond-dipping. We have nets and trays, and children can look at the insects and tiny creatures that live in the water.",
+            "GUIDE: Just beyond the centre are the Reed Beds. There's a raised boardwalk all the way through, and it's completely flat, so this is our wheelchair-accessible path. It's also the best place to hear warblers in spring.",
+            "GUIDE: If you follow the boardwalk to the end you reach the North Hide. It's a wooden shelter with windows facing the main lake. We used to run photography workshops in there, but the space was too small, so those now take place at the Boathouse instead. The North Hide is where our guided bird walks finish, and people stay on to watch.",
+            "GUIDE: Sorry, I should say the guided bird walks start at the Visitor Centre but are really based at the North Hide; that's where the guide does most of the talking.",
+            "GUIDE: The Boathouse, as I said, hosts the photography workshops, and they're very popular, so visitors need to book.",
+            "GUIDE: Then there's Willow Walk, the long path around the eastern edge. It's a shared path, and that's where you can hire a bike from the small kiosk at the entrance. Bikes aren't allowed anywhere else on the reserve.",
+            "GUIDE: Finally, the Meadow, beside the car park. There are tables and benches there, so that's our picnic area. Visitors shouldn't eat in the hides because it attracts rats.",
+            "NARRATOR: That is the end of Part 2."
+          ]
+        }
+      ],
+      "questions": [
+        {"type": "multiple_choice", "prompt": "Who first campaigned to protect the site?", "options": ["The local council", "A group of schoolteachers", "The quarry owners"], "marks": 1, "answer": {"correct_answers": "A group of schoolteachers", "rationale": "'It was a group of local schoolteachers, not the council, who first campaigned.'"}},
+        {"type": "multiple_choice", "prompt": "What do most volunteers spend their time doing?", "options": ["Counting birds", "Guiding visitors", "Managing the habitat"], "marks": 1, "answer": {"correct_answers": "Managing the habitat", "rationale": "About two thirds do habitat work: cutting willow and clearing ditches."}},
+        {"type": "multiple_choice", "prompt": "The safety briefing for new volunteers", "options": ["lasts a full day.", "takes place on Mondays.", "is optional for experienced people."], "marks": 1, "answer": {"correct_answers": "takes place on Mondays.", "rationale": "It was reduced from a full day to two hours and is held every Monday morning; everyone must attend."}},
+        {"type": "multiple_choice", "prompt": "Visitors to the reserve have to pay for", "options": ["entry.", "parking.", "guided walks."], "marks": 1, "answer": {"correct_answers": "parking.", "rationale": "Entry is free; 'parking is the only thing we charge for'."}},
+        {"type": "matching", "prompt": "Location: Visitor Centre", "options": {"prompts": ["Visitor Centre"], "choices": ["Pond-dipping", "Wheelchair-accessible path", "Guided bird walks", "Photography workshops", "Bike hire", "Picnic area", "Boat trips"]}, "marks": 1, "answer": {"correct_answers": {"0": "Pond-dipping"}, "rationale": "Families come to the Visitor Centre for pond-dipping."}},
+        {"type": "matching", "prompt": "Location: Reed Beds", "options": {"prompts": ["Reed Beds"], "choices": ["Pond-dipping", "Wheelchair-accessible path", "Guided bird walks", "Photography workshops", "Bike hire", "Picnic area", "Boat trips"]}, "marks": 1, "answer": {"correct_answers": {"0": "Wheelchair-accessible path"}, "rationale": "The flat boardwalk through the Reed Beds is the wheelchair-accessible path."}},
+        {"type": "matching", "prompt": "Location: North Hide", "options": {"prompts": ["North Hide"], "choices": ["Pond-dipping", "Wheelchair-accessible path", "Guided bird walks", "Photography workshops", "Bike hire", "Picnic area", "Boat trips"]}, "marks": 1, "answer": {"correct_answers": {"0": "Guided bird walks"}, "rationale": "Photography workshops moved away from the North Hide; the guided bird walks are based there."}},
+        {"type": "matching", "prompt": "Location: Boathouse", "options": {"prompts": ["Boathouse"], "choices": ["Pond-dipping", "Wheelchair-accessible path", "Guided bird walks", "Photography workshops", "Bike hire", "Picnic area", "Boat trips"]}, "marks": 1, "answer": {"correct_answers": {"0": "Photography workshops"}, "rationale": "The Boathouse now hosts the photography workshops. Boat trips are never mentioned."}},
+        {"type": "matching", "prompt": "Location: Willow Walk", "options": {"prompts": ["Willow Walk"], "choices": ["Pond-dipping", "Wheelchair-accessible path", "Guided bird walks", "Photography workshops", "Bike hire", "Picnic area", "Boat trips"]}, "marks": 1, "answer": {"correct_answers": {"0": "Bike hire"}, "rationale": "Bikes can be hired from the kiosk at the entrance to Willow Walk."}},
+        {"type": "matching", "prompt": "Location: Meadow", "options": {"prompts": ["Meadow"], "choices": ["Pond-dipping", "Wheelchair-accessible path", "Guided bird walks", "Photography workshops", "Bike hire", "Picnic area", "Boat trips"]}, "marks": 1, "answer": {"correct_answers": {"0": "Picnic area"}, "rationale": "The Meadow has tables and benches: 'that's our picnic area'."}}
+      ]
+    },
+    {
+      "module": "listening",
+      "instructions": "Part 3. Questions 21-25: choose the correct answer. Questions 26-30: complete the sentences. Write ONE WORD ONLY for each answer.",
+      "timing_seconds": 600,
+      "media_assets": [
+        {
+          "type": "audio",
+          "local_file": "audio/listening-mock-1-part-3.wav",
+          "attribution": "Original Prepband script, synthesized speech.",
+          "license": "CC BY 4.0",
+          "transcript": [
+            "NARRATOR: Part 3. You will hear two students, Priya and Daniel, discussing a presentation they are preparing on vertical farming. First, look at questions 21 to 25.",
+            "PRIYA: So, Daniel, we need to decide on the focus. I know you wanted to cover the whole history of indoor farming.",
+            "DANIEL: I did, but having read more, I think that's too broad for fifteen minutes. The tutor said she wants depth, not a list of facts.",
+            "PRIYA: Agreed. What about concentrating on whether vertical farms can actually compete with traditional farms on cost?",
+            "DANIEL: That's the most interesting question, I think. Everyone talks about the environmental benefits, but nobody explains the economics.",
+            "PRIYA: Right. So what did you find on costs?",
+            "DANIEL: The surprise for me was that it isn't the buildings that are most expensive. It's not the labour either, because most farms are heavily automated. It's electricity, for the lighting. That's by far the largest running cost.",
+            "PRIYA: That matches what I read about the farm in the Netherlands. They only became profitable when they switched to growing herbs instead of lettuce.",
+            "DANIEL: Why herbs?",
+            "PRIYA: Because herbs sell for a much higher price per kilo, so the energy cost matters less. It wasn't that they grew faster. Lettuce actually grows faster.",
+            "DANIEL: Interesting. For our sources, should we use the company websites?",
+            "PRIYA: I'd be careful. They obviously want to present the best picture. I'd rather rely on the government report and the two journal articles. We can mention the websites, but only as examples of how the industry markets itself.",
+            "DANIEL: Fair enough. And how should we split the presentation?",
+            "PRIYA: I'm happy to do the introduction and the case study, if you take the cost analysis. You're better with numbers than me.",
+            "DANIEL: OK, that works.",
+            "NARRATOR: Now look at questions 26 to 30.",
+            "PRIYA: Let's plan the visuals. I think a single chart comparing costs would be clearer than lots of tables.",
+            "DANIEL: Definitely. We should also show a photograph of the inside of a farm. People don't picture how tall the racks are.",
+            "PRIYA: Good. And for the conclusion, I'd like to suggest that the technology will probably succeed first in cities, where land is most expensive.",
+            "DANIEL: Yes, and maybe mention climates that are too cold for outdoor farming for much of the year.",
+            "PRIYA: Nice. What about a practice run? The tutor has offered feedback if we send a recording by Thursday.",
+            "DANIEL: Let's record it on Wednesday, then. And we need to keep it within fifteen minutes. Last time we lost marks for running over.",
+            "PRIYA: I'll bring a timer. And let's prepare a handout with our references, so we don't have to read them out.",
+            "NARRATOR: That is the end of Part 3."
+          ]
+        }
+      ],
+      "questions": [
+        {"type": "multiple_choice", "prompt": "Why does Daniel reject his original idea for the presentation?", "options": ["It has already been covered in lectures.", "It would not allow enough depth.", "There is not enough research on it."], "marks": 1, "answer": {"correct_answers": "It would not allow enough depth.", "rationale": "It's 'too broad for fifteen minutes' and the tutor wants depth."}},
+        {"type": "multiple_choice", "prompt": "According to Daniel, the largest running cost of a vertical farm is", "options": ["the building.", "staff wages.", "electricity."], "marks": 1, "answer": {"correct_answers": "electricity.", "rationale": "'It's electricity, for the lighting. That's by far the largest running cost.'"}},
+        {"type": "multiple_choice", "prompt": "The Dutch farm became profitable because herbs", "options": ["grow more quickly than lettuce.", "sell for a higher price.", "need less light."], "marks": 1, "answer": {"correct_answers": "sell for a higher price.", "rationale": "Herbs sell for a higher price per kilo; lettuce actually grows faster."}},
+        {"type": "multiple_choice", "prompt": "What does Priya say about company websites?", "options": ["They should not be used at all.", "They are the most up-to-date source.", "They show how the industry promotes itself."], "marks": 1, "answer": {"correct_answers": "They show how the industry promotes itself.", "rationale": "They can be mentioned 'only as examples of how the industry markets itself'."}},
+        {"type": "multiple_choice", "prompt": "Which part of the presentation will Daniel give?", "options": ["The introduction", "The case study", "The cost analysis"], "marks": 1, "answer": {"correct_answers": "The cost analysis", "rationale": "Priya does the introduction and case study; Daniel takes the cost analysis."}},
+        {"type": "sentence_completion", "prompt": "The students will use one ___ to compare costs.", "marks": 1, "answer": {"correct_answers": ["chart"], "rationale": "'A single chart comparing costs would be clearer than lots of tables.'"}},
+        {"type": "sentence_completion", "prompt": "A ___ will show how tall the racks inside a farm are.", "marks": 1, "answer": {"correct_answers": ["photograph"], "accepted_aliases": ["photo"], "rationale": "Daniel suggests a photograph of the inside of a farm."}},
+        {"type": "sentence_completion", "prompt": "They will suggest vertical farms succeed first in ___, where land is expensive.", "marks": 1, "answer": {"correct_answers": ["cities"], "rationale": "'Probably succeed first in cities, where land is most expensive.'"}},
+        {"type": "sentence_completion", "prompt": "They will record a practice run on ___.", "marks": 1, "answer": {"correct_answers": ["Wednesday"], "rationale": "The recording is due Thursday; they will record it on Wednesday."}},
+        {"type": "sentence_completion", "prompt": "A ___ will list their references.", "marks": 1, "answer": {"correct_answers": ["handout"], "rationale": "'Let's prepare a handout with our references.'"}}
+      ]
+    },
+    {
+      "module": "listening",
+      "instructions": "Part 4. Questions 31-40. Complete the notes. Write ONE WORD ONLY for each answer.",
+      "timing_seconds": 600,
+      "media_assets": [
+        {
+          "type": "audio",
+          "local_file": "audio/listening-mock-1-part-4.wav",
+          "attribution": "Original Prepband script, synthesized speech.",
+          "license": "CC BY 4.0",
+          "transcript": [
+            "NARRATOR: Part 4. You will hear part of a lecture about the acoustics of concert halls. First, look at questions 31 to 40.",
+            "LECTURER: Today I want to look at why some concert halls sound wonderful and others, frankly, do not. For most of history, hall design was a matter of trial and error. Architects copied halls that musicians liked, without really knowing why they worked.",
+            "LECTURER: That changed around nineteen hundred, when a physicist called Wallace Sabine was asked to fix a lecture theatre at Harvard where nobody could understand the speaker. Sabine realised that the key quantity was reverberation time: how long a sound takes to fade away after its source stops. He measured it, rather unusually, using cushions borrowed from a nearby theatre, adding them to the room one by one and timing how quickly an organ note died away.",
+            "LECTURER: From those experiments he produced a formula linking reverberation time to two things: the volume of the room and the amount of absorbing material in it. Larger rooms reverberate longer; more soft material, such as curtains, carpet or people, makes sound die away faster.",
+            "LECTURER: And people matter a great deal. An audience absorbs so much sound that a hall can sound completely different when it is empty. This is why modern halls use seats designed to absorb roughly the same amount of sound whether or not someone is sitting in them, so that rehearsals sound like concerts.",
+            "LECTURER: Now, what is the ideal reverberation time? It depends on the music. For speech, you want something short, under one second, or the words blur together. For orchestral music, listeners generally prefer around two seconds, which gives the sound a sense of warmth and fullness.",
+            "LECTURER: Reverberation is not the whole story, though. The shape of the hall matters too. Many of the most admired halls are long, narrow rectangles, sometimes called shoebox halls. Their side walls are close to the audience, so sound reflects back from the side quickly, and this gives listeners a feeling of being surrounded by the music. Researchers call this quality envelopment.",
+            "LECTURER: Fan-shaped halls, which became popular in the twentieth century because they fit more seats with a good view, often perform worse here, because the walls angle away and send reflections towards the back instead.",
+            "LECTURER: A final problem is the echo. If a strong reflection arrives more than about fifty milliseconds after the direct sound, the ear hears it as a separate event. Curved rear walls are a common cause, because they focus sound like a mirror. Designers break up such surfaces with irregular panels, which scatter the sound in many directions. This scattering is called diffusion.",
+            "LECTURER: Today, before a hall is built, acousticians test the design using computer models, and sometimes a physical model built at one tenth of the real size, filled with nitrogen to reduce the absorption of high frequencies. Even so, most designers will tell you that the final adjustments still happen once real musicians start to play.",
+            "NARRATOR: That is the end of Part 4."
+          ]
+        }
+      ],
+      "questions": [
+        {"type": "note_completion", "prompt": "Early hall design relied on trial and ___.", "marks": 1, "answer": {"correct_answers": ["error"], "rationale": "'Hall design was a matter of trial and error.'"}},
+        {"type": "note_completion", "prompt": "Sabine was asked to improve a lecture ___ at Harvard.", "marks": 1, "answer": {"correct_answers": ["theatre"], "accepted_aliases": ["theater"], "rationale": "He was asked to fix a lecture theatre where nobody could understand the speaker."}},
+        {"type": "note_completion", "prompt": "In his experiments he added ___ to the room one at a time.", "marks": 1, "answer": {"correct_answers": ["cushions"], "rationale": "He used cushions borrowed from a nearby theatre."}},
+        {"type": "note_completion", "prompt": "Reverberation time depends on the room's ___ and its absorbing material.", "marks": 1, "answer": {"correct_answers": ["volume"], "accepted_aliases": ["size"], "rationale": "The formula links reverberation time to the volume of the room and the absorbing material."}},
+        {"type": "note_completion", "prompt": "Modern ___ absorb similar sound whether occupied or empty.", "marks": 1, "answer": {"correct_answers": ["seats"], "rationale": "Halls use seats designed to absorb about the same whether or not someone is sitting in them."}},
+        {"type": "note_completion", "prompt": "Ideal reverberation for orchestral music: about two ___.", "marks": 1, "answer": {"correct_answers": ["seconds"], "rationale": "Speech needs under one second; orchestral music around two seconds."}},
+        {"type": "note_completion", "prompt": "Shoebox halls: sound reflects quickly from the ___ walls.", "marks": 1, "answer": {"correct_answers": ["side"], "rationale": "Side walls are close to the audience, so sound reflects back quickly."}},
+        {"type": "note_completion", "prompt": "The feeling of being surrounded by music is called ___.", "marks": 1, "answer": {"correct_answers": ["envelopment"], "rationale": "'Researchers call this quality envelopment.'"}},
+        {"type": "note_completion", "prompt": "Irregular panels scatter sound; this is known as ___.", "marks": 1, "answer": {"correct_answers": ["diffusion"], "rationale": "'This scattering is called diffusion.'"}},
+        {"type": "note_completion", "prompt": "Scale models may be filled with ___ to reduce high-frequency absorption.", "marks": 1, "answer": {"correct_answers": ["nitrogen"], "rationale": "Physical models at one tenth scale are filled with nitrogen."}}
+      ]
+    }
+  ]
+}

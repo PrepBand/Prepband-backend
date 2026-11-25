@@ -1,0 +1,73 @@
+{
+  "format": "prepband-test/v1",
+  "title": "Speaking Practice: Cue Card and Discussion",
+  "module": "speaking",
+  "track": "both",
+  "kind": "practice",
+  "difficulty": "foundation",
+  "duration_minutes": 12,
+  "sections": [
+    {
+      "module": "speaking",
+      "instructions": "Part 2. You have one minute to prepare and up to two minutes to speak.",
+      "timing_seconds": 240,
+      "speaking_prompts": [
+        {
+          "part": 2,
+          "prompt": "Describe a place you visited that was very different from where you live.",
+          "bullets": [
+            "where it was",
+            "when you went there",
+            "what was different about it",
+            "and explain how you felt about the visit"
+          ],
+          "prep_seconds": 60,
+          "speak_seconds": 120
+        }
+      ]
+    },
+    {
+      "module": "speaking",
+      "instructions": "Part 3. Discussion questions linked to the cue card.",
+      "timing_seconds": 240,
+      "speaking_prompts": [
+        {
+          "part": 3,
+          "prompt": "Why do people enjoy visiting places that are different from home?",
+          "speak_seconds": 60,
+          "follow_ups": [
+            {
+              "text": "Do older and younger people look for different things when they travel?"
+            },
+            {
+              "text": "Is it possible to enjoy a different culture without travelling?"
+            }
+          ]
+        },
+        {
+          "part": 3,
+          "prompt": "Does travel always help people understand other cultures?",
+          "speak_seconds": 60,
+          "follow_ups": [
+            {
+              "text": "What else can help people understand another culture?"
+            }
+          ]
+        },
+        {
+          "part": 3,
+          "prompt": "How has tourism changed the places people visit?",
+          "speak_seconds": 60,
+          "follow_ups": [
+            {
+              "text": "Who benefits most from tourism in a town or city?"
+            },
+            {
+              "text": "Should governments limit the number of tourists in popular places?"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

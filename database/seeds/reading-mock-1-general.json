@@ -1,0 +1,131 @@
+{
+  "format": "prepband-test/v1",
+  "title": "General Training Reading Mock Test 1",
+  "module": "reading",
+  "track": "general",
+  "kind": "mock",
+  "difficulty": "intermediate",
+  "duration_minutes": 60,
+  "sections": [
+    {
+      "module": "reading",
+      "instructions": "Section 1. Questions 1-14. Questions 1-7: read the advertisements for evening classes. Which class (A-E) does each statement describe? Questions 8-14: read the library notice. Do the statements agree with the information? Choose TRUE, FALSE or NOT GIVEN.",
+      "timing_seconds": 1200,
+      "passages": [
+        {
+          "title": "Eastfield Community College: Evening Classes This Autumn",
+          "source": "Original Prepband text",
+          "license": "CC BY 4.0",
+          "attribution": "Prepband content team",
+          "body": [
+            "A. Beginners' Photography. Learn to take better pictures with any camera, including your phone. Six Tuesday evenings from 7pm. No equipment needs to be bought, but bring a camera or phone with you each week. £60.",
+            "B. Practical Car Maintenance. Save money by learning to check oil, change a tyre and spot problems early. Four Wednesday evenings, held in the college garage. Overalls are provided. Places are limited to eight, so early booking is advised. £75.",
+            "C. Conversational Spanish. A relaxed course for people who want to speak, not study grammar. Ten Thursday evenings. Suitable for complete beginners. The fee includes a course book. £90.",
+            "D. Cooking for One. Simple, healthy meals that do not waste food. Five Monday evenings in the college kitchen. All ingredients are included in the price, and you take home what you cook. £85.",
+            "E. Introduction to Website Design. Build a simple website for a club or small business. Eight Monday evenings in the computer room. Some experience of using a computer is essential. Students aged 60 and over receive a 20% discount. £70."
+          ]
+        },
+        {
+          "title": "Notice: Changes at Eastfield Library",
+          "source": "Original Prepband text",
+          "license": "CC BY 4.0",
+          "attribution": "Prepband content team",
+          "body": [
+            "From 1 October, Eastfield Library will open at 9am instead of 10am from Monday to Friday. Saturday opening hours will not change. The library will continue to be closed on Sundays.",
+            "Members will be able to borrow up to fifteen items at a time, an increase from ten. The loan period for books remains three weeks, but DVDs must now be returned within one week.",
+            "We are sorry to announce that late-return fines will no longer be waived for children. However, fines for all members have been reduced to 10p per item per day.",
+            "The ground-floor study room has been refurbished and now has twelve desks with power sockets. Desks can be reserved online for up to three hours. Free wi-fi is available throughout the building, and a printer can be used for a small charge. Please ask at the front desk for details."
+          ]
+        }
+      ],
+      "questions": [
+        {"type": "matching", "prompt": "This class has a reduced price for older students.", "options": {"prompts": ["Class"], "choices": ["A", "B", "C", "D", "E"]}, "marks": 1, "answer": {"correct_answers": {"0": "E"}, "rationale": "Website Design: 'Students aged 60 and over receive a 20% discount.'"}},
+        {"type": "matching", "prompt": "Students must bring their own device to every lesson.", "options": {"prompts": ["Class"], "choices": ["A", "B", "C", "D", "E"]}, "marks": 1, "answer": {"correct_answers": {"0": "A"}, "rationale": "Photography: 'bring a camera or phone with you each week'."}},
+        {"type": "matching", "prompt": "This class is the longest course.", "options": {"prompts": ["Class"], "choices": ["A", "B", "C", "D", "E"]}, "marks": 1, "answer": {"correct_answers": {"0": "C"}, "rationale": "Spanish runs for ten evenings, more than any other class."}},
+        {"type": "matching", "prompt": "Students keep the food they make.", "options": {"prompts": ["Class"], "choices": ["A", "B", "C", "D", "E"]}, "marks": 1, "answer": {"correct_answers": {"0": "D"}, "rationale": "Cooking for One: 'you take home what you cook'."}},
+        {"type": "matching", "prompt": "This class has a small number of places.", "options": {"prompts": ["Class"], "choices": ["A", "B", "C", "D", "E"]}, "marks": 1, "answer": {"correct_answers": {"0": "B"}, "rationale": "Car Maintenance: 'Places are limited to eight.'"}},
+        {"type": "matching", "prompt": "Previous skills are required.", "options": {"prompts": ["Class"], "choices": ["A", "B", "C", "D", "E"]}, "marks": 1, "answer": {"correct_answers": {"0": "E"}, "rationale": "Website Design: 'Some experience of using a computer is essential.'"}},
+        {"type": "matching", "prompt": "The price includes something to read.", "options": {"prompts": ["Class"], "choices": ["A", "B", "C", "D", "E"]}, "marks": 1, "answer": {"correct_answers": {"0": "C"}, "rationale": "Spanish: 'The fee includes a course book.'"}},
+        {"type": "true_false_not_given", "prompt": "The library will open earlier on weekdays from October.", "marks": 1, "answer": {"correct_answers": "True", "rationale": "It will open at 9am instead of 10am, Monday to Friday."}},
+        {"type": "true_false_not_given", "prompt": "The library will start opening on Sundays.", "marks": 1, "answer": {"correct_answers": "False", "rationale": "'The library will continue to be closed on Sundays.'"}},
+        {"type": "true_false_not_given", "prompt": "Members can now borrow more items than before.", "marks": 1, "answer": {"correct_answers": "True", "rationale": "Up to fifteen items, an increase from ten."}},
+        {"type": "true_false_not_given", "prompt": "Books can now be borrowed for a shorter time.", "marks": 1, "answer": {"correct_answers": "False", "rationale": "The loan period for books remains three weeks; only DVDs changed."}},
+        {"type": "true_false_not_given", "prompt": "Children will now have to pay fines for late returns.", "marks": 1, "answer": {"correct_answers": "True", "rationale": "Fines 'will no longer be waived for children'."}},
+        {"type": "true_false_not_given", "prompt": "Study desks can be booked by telephone.", "marks": 1, "answer": {"correct_answers": "Not Given", "rationale": "Desks can be reserved online; telephone booking is not mentioned."}},
+        {"type": "true_false_not_given", "prompt": "Printing in the library is free.", "marks": 1, "answer": {"correct_answers": "False", "rationale": "A printer can be used 'for a small charge'."}}
+      ]
+    },
+    {
+      "module": "reading",
+      "instructions": "Section 2. Questions 15-27. Questions 15-21: read the staff guidance and complete the notes with NO MORE THAN TWO WORDS from the text. Questions 22-27: choose the correct answer.",
+      "timing_seconds": 1200,
+      "passages": [
+        {
+          "title": "Harbour Hotel Group: Guidance for New Front Desk Staff",
+          "source": "Original Prepband text",
+          "license": "CC BY 4.0",
+          "attribution": "Prepband content team",
+          "body": [
+            "Your first week. During your first five shifts you will work alongside an experienced colleague, known as your buddy. Your buddy will show you the booking system and introduce you to the housekeeping and kitchen teams. You will not be asked to work a night shift until you have completed this period.",
+            "Uniform. You will be given two jackets and three shirts. Please wear plain black shoes; trainers are not permitted on the front desk. Your name badge must be worn at all times when you are on duty. If your uniform is damaged, report it to the duty manager, who will arrange a replacement free of charge.",
+            "Shifts and breaks. Front desk shifts are eight hours long. For each shift you are entitled to a paid break of thirty minutes, which should be taken in the staff room, not in public areas. If you would like to swap a shift with a colleague, both of you must sign the request form at least 48 hours in advance.",
+            "Dealing with complaints. Always listen to the guest without interrupting, and apologise for the inconvenience even if the problem was not the hotel's fault. Staff on the front desk may offer a complimentary drink or a late check-out. Any refund, however small, must be approved by the duty manager. Record every complaint in the guest log before the end of your shift.",
+            "Sickness. If you are unable to work, telephone the duty manager at least two hours before your shift starts. Do not send a text message or email. If you are absent for more than three days, you will need to provide a note from a doctor.",
+            "Training. All new staff must complete the online fire safety course within their first month. Language courses are available for staff who would like to improve their French or German, and the cost is covered in full by the company for anyone who has worked here for six months or more."
+          ]
+        }
+      ],
+      "questions": [
+        {"type": "note_completion", "prompt": "An experienced colleague who helps in the first week is called a ___.", "marks": 1, "answer": {"correct_answers": ["buddy"], "rationale": "'An experienced colleague, known as your buddy.'"}},
+        {"type": "note_completion", "prompt": "New staff will not work a ___ during their first five shifts.", "marks": 1, "answer": {"correct_answers": ["night shift"], "rationale": "'You will not be asked to work a night shift until you have completed this period.'"}},
+        {"type": "note_completion", "prompt": "Staff must not wear ___ on the front desk.", "marks": 1, "answer": {"correct_answers": ["trainers"], "rationale": "'Trainers are not permitted on the front desk.'"}},
+        {"type": "note_completion", "prompt": "A damaged uniform should be reported to the ___.", "marks": 1, "answer": {"correct_answers": ["duty manager"], "rationale": "'Report it to the duty manager.'"}},
+        {"type": "note_completion", "prompt": "Breaks must be taken in the ___.", "marks": 1, "answer": {"correct_answers": ["staff room"], "rationale": "'Should be taken in the staff room, not in public areas.'"}},
+        {"type": "note_completion", "prompt": "To swap a shift, both staff must sign a ___.", "marks": 1, "answer": {"correct_answers": ["request form"], "rationale": "'Both of you must sign the request form at least 48 hours in advance.'"}},
+        {"type": "note_completion", "prompt": "Every complaint must be recorded in the ___.", "marks": 1, "answer": {"correct_answers": ["guest log"], "rationale": "'Record every complaint in the guest log.'"}},
+        {"type": "multiple_choice", "prompt": "What can front desk staff offer an unhappy guest without asking a manager?", "options": ["A small refund", "A free drink", "A room upgrade"], "marks": 1, "answer": {"correct_answers": "A free drink", "rationale": "Staff may offer a complimentary drink or late check-out; any refund needs approval."}},
+        {"type": "multiple_choice", "prompt": "When should staff apologise to a guest?", "options": ["Only when the hotel caused the problem", "Whenever a guest complains", "After checking the guest log"], "marks": 1, "answer": {"correct_answers": "Whenever a guest complains", "rationale": "Apologise 'even if the problem was not the hotel's fault'."}},
+        {"type": "multiple_choice", "prompt": "How should staff report that they are ill?", "options": ["By text message", "By email", "By phone"], "marks": 1, "answer": {"correct_answers": "By phone", "rationale": "'Telephone the duty manager... Do not send a text message or email.'"}},
+        {"type": "multiple_choice", "prompt": "A doctor's note is needed after", "options": ["one day of absence.", "more than three days of absence.", "any absence during the first month."], "marks": 1, "answer": {"correct_answers": "more than three days of absence.", "rationale": "'If you are absent for more than three days, you will need to provide a note from a doctor.'"}},
+        {"type": "multiple_choice", "prompt": "Which training must every new employee complete?", "options": ["Fire safety", "French", "German"], "marks": 1, "answer": {"correct_answers": "Fire safety", "rationale": "The online fire safety course is mandatory within the first month; languages are optional."}},
+        {"type": "multiple_choice", "prompt": "The company pays the full cost of language courses for staff who", "options": ["have worked there for at least six months.", "work on the front desk.", "complete the fire safety course."], "marks": 1, "answer": {"correct_answers": "have worked there for at least six months.", "rationale": "Covered in full for 'anyone who has worked here for six months or more'."}}
+      ]
+    },
+    {
+      "module": "reading",
+      "instructions": "Section 3. Questions 28-40. Questions 28-33: choose the correct heading for each paragraph from the list. Questions 34-40: complete the summary with ONE WORD from the passage.",
+      "timing_seconds": 1200,
+      "passages": [
+        {
+          "title": "The Allotment Revival",
+          "source": "Original Prepband text",
+          "license": "CC BY 4.0",
+          "attribution": "Prepband content team",
+          "body": [
+            "A. In many British towns, small plots of rented land called allotments can be found squeezed between railway lines, behind housing estates and along the edges of parks. Each plot is typically about the size of a tennis court, and the people who rent them, known as plot-holders, use them to grow vegetables, fruit and flowers. For a modest annual rent, often less than the cost of a single meal out, a plot-holder has a space that is entirely their own to cultivate.",
+            "B. Allotments have a long history. Their modern form developed in the nineteenth century, when landowners and local authorities provided plots for poor families who had moved to industrial towns and could no longer grow their own food. Their greatest moment came during the Second World War, when a government campaign encouraged people to grow vegetables wherever they could, and the number of plots rose to around one and a half million.",
+            "C. After the war, however, interest declined steadily. Supermarkets made fresh food cheap and convenient, more people had gardens of their own, and allotments came to be seen as old-fashioned, the hobby of retired men in flat caps. Many sites fell into disuse, and councils, under pressure to find land for housing, sold a large number of them to developers.",
+            "D. Since the early 2000s, the picture has changed again. Waiting lists in some cities now stretch to several years. The new plot-holders are a far more varied group than before: young families, people living in flats without gardens, and a much higher proportion of women. Television cookery programmes and a wider interest in where food comes from are often given credit for the change, as is a desire to spend time outdoors away from screens.",
+            "E. Researchers have begun to measure the benefits. Studies have found that people who spend time on allotments report lower stress levels and better moods than people who spend the same time on other outdoor activities, possibly because gardening combines gentle exercise with a sense of achievement. Allotment sites also tend to support a wide variety of wildlife, from bees to hedgehogs, providing green corridors through otherwise built-up areas.",
+            "F. The revival has created its own difficulties. Long waiting lists frustrate people who want a plot, while some existing plot-holders struggle to keep their land in good condition. To use space more fairly, many councils now offer half-plots or even quarter-plots, which are easier for beginners to manage. Some sites have set up shared plots, where several households garden together, and others run training days where experienced growers pass on their knowledge to newcomers."
+          ]
+        }
+      ],
+      "questions": [
+        {"type": "matching", "prompt": "Paragraph A", "options": {"prompts": ["Heading"], "choices": ["i. A new and more varied generation", "ii. What an allotment is", "iii. Solutions to new problems", "iv. A period of decline", "v. Origins and wartime success", "vi. Evidence of health and environmental value", "vii. The cost of renting land"]}, "marks": 1, "answer": {"correct_answers": {"0": "ii. What an allotment is"}, "rationale": "Paragraph A describes what allotments are and who uses them."}},
+        {"type": "matching", "prompt": "Paragraph B", "options": {"prompts": ["Heading"], "choices": ["i. A new and more varied generation", "ii. What an allotment is", "iii. Solutions to new problems", "iv. A period of decline", "v. Origins and wartime success", "vi. Evidence of health and environmental value", "vii. The cost of renting land"]}, "marks": 1, "answer": {"correct_answers": {"0": "v. Origins and wartime success"}, "rationale": "Paragraph B covers the nineteenth-century origins and the Second World War peak."}},
+        {"type": "matching", "prompt": "Paragraph C", "options": {"prompts": ["Heading"], "choices": ["i. A new and more varied generation", "ii. What an allotment is", "iii. Solutions to new problems", "iv. A period of decline", "v. Origins and wartime success", "vi. Evidence of health and environmental value", "vii. The cost of renting land"]}, "marks": 1, "answer": {"correct_answers": {"0": "iv. A period of decline"}, "rationale": "After the war 'interest declined steadily' and sites were sold."}},
+        {"type": "matching", "prompt": "Paragraph D", "options": {"prompts": ["Heading"], "choices": ["i. A new and more varied generation", "ii. What an allotment is", "iii. Solutions to new problems", "iv. A period of decline", "v. Origins and wartime success", "vi. Evidence of health and environmental value", "vii. The cost of renting land"]}, "marks": 1, "answer": {"correct_answers": {"0": "i. A new and more varied generation"}, "rationale": "New plot-holders are 'a far more varied group than before'."}},
+        {"type": "matching", "prompt": "Paragraph E", "options": {"prompts": ["Heading"], "choices": ["i. A new and more varied generation", "ii. What an allotment is", "iii. Solutions to new problems", "iv. A period of decline", "v. Origins and wartime success", "vi. Evidence of health and environmental value", "vii. The cost of renting land"]}, "marks": 1, "answer": {"correct_answers": {"0": "vi. Evidence of health and environmental value"}, "rationale": "Paragraph E reports lower stress and wildlife benefits."}},
+        {"type": "matching", "prompt": "Paragraph F", "options": {"prompts": ["Heading"], "choices": ["i. A new and more varied generation", "ii. What an allotment is", "iii. Solutions to new problems", "iv. A period of decline", "v. Origins and wartime success", "vi. Evidence of health and environmental value", "vii. The cost of renting land"]}, "marks": 1, "answer": {"correct_answers": {"0": "iii. Solutions to new problems"}, "rationale": "Half-plots, shared plots and training days respond to the revival's difficulties. Heading vii is a distractor."}},
+        {"type": "gap_fill", "prompt": "Allotments first provided food for poor families in industrial ___.", "marks": 1, "answer": {"correct_answers": ["towns"], "rationale": "'Poor families who had moved to industrial towns.'"}},
+        {"type": "gap_fill", "prompt": "During the war, a government ___ encouraged people to grow vegetables.", "marks": 1, "answer": {"correct_answers": ["campaign"], "rationale": "'A government campaign encouraged people to grow vegetables.'"}},
+        {"type": "gap_fill", "prompt": "After the war, ___ made fresh food cheap and convenient.", "marks": 1, "answer": {"correct_answers": ["supermarkets"], "rationale": "'Supermarkets made fresh food cheap and convenient.'"}},
+        {"type": "gap_fill", "prompt": "Many sites were sold to ___ to build housing.", "marks": 1, "answer": {"correct_answers": ["developers"], "rationale": "Councils 'sold a large number of them to developers'."}},
+        {"type": "gap_fill", "prompt": "Today, many new plot-holders live in ___ without gardens.", "marks": 1, "answer": {"correct_answers": ["flats"], "rationale": "'People living in flats without gardens.'"}},
+        {"type": "gap_fill", "prompt": "Allotment sites act as green ___ for wildlife.", "marks": 1, "answer": {"correct_answers": ["corridors"], "rationale": "'Providing green corridors through otherwise built-up areas.'"}},
+        {"type": "gap_fill", "prompt": "Half-plots are easier for ___ to manage.", "marks": 1, "answer": {"correct_answers": ["beginners"], "rationale": "'Half-plots or even quarter-plots, which are easier for beginners to manage.'"}}
+      ]
+    }
+  ]
+}
