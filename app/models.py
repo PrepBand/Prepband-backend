@@ -259,7 +259,10 @@ class SpeakingResponse(SQLModel, table=True):
     # Phase 5 (0008): live mode. transcript/turn transcripts only with consent.
     transcript: str | None = None
     stt_model: str | None = None
-    turns: list[Any] | None = Field(default=None, sa_column=Column(JSON))
+    # none_as_null: None must be SQL NULL, not JSON null - the column's check
+    # (turns is null or a JSON array) rejects JSON null, which made every
+    # audio/text-mode speaking save fail on Postgres.
+    turns: list[Any] | None = Field(default=None, sa_column=Column(JSON(none_as_null=True)))
 
 
 class SelfReview(SQLModel, table=True):

@@ -62,7 +62,9 @@ def normalize_certificate_code(raw: str) -> str:
 def require_owned_mock(session: Session, mock_id: UUID, student_id: UUID, lock: bool = False) -> MockAttempt:
     query = select(MockAttempt).where(MockAttempt.id == mock_id)
     if lock:
-        query = query.with_for_update()
+        # populate_existing: re-locking later in the same request must see
+        # what other requests committed meanwhile, not the cached row.
+        query = query.with_for_update().execution_options(populate_existing=True)
     mock = session.exec(query).first()
     # 404 rather than 403 for someone else's mock: don't confirm it exists.
     if mock is None or mock.student_id != student_id:
@@ -152,6 +154,18 @@ def to_certificate_summary(certificate: Certificate | None) -> CertificateSummar
 # --- state transitions ---------------------------------------------------------
 
 
+def _lock_mock(session: Session, mock: MockAttempt) -> MockAttempt:
+    return session.exec(
+        select(MockAttempt).where(MockAttempt.id == mock.id).with_for_update().execution_options(populate_existing=True)
+    ).one()
+
+
+def _lock_attempt(session: Session, attempt: Attempt) -> Attempt:
+    return session.exec(
+        select(Attempt).where(Attempt.id == attempt.id).with_for_update().execution_options(populate_existing=True)
+    ).one()
+
+
 def reconcile_mock(session: Session, mock: MockAttempt, reconcile_attempt) -> MockAttempt:
     """Brings an open mock up to date: expires any module attempt whose
     deadline has passed (via the attempt engine's own reconcile), then
@@ -179,6 +193,11 @@ def complete_mock(session: Session, mock: MockAttempt) -> MockAttempt:
     certificate in a single transaction. Eligibility comes only from the
     server's own attempt records. Idempotent."""
 
+    # Lock and re-read first: two reads (GET /mocks/{id}) can both see four
+    # finished modules, and the second "completed" update would hit
+    # mock_attempts_immutable_once_terminal. The second caller waits here
+    # and then sees the first one's result.
+    mock = _lock_mock(session, mock)
     if mock.status == "completed":
         return mock
     if mock.status != "in_progress":
@@ -221,13 +240,22 @@ def complete_mock(session: Session, mock: MockAttempt) -> MockAttempt:
 
 
 def abandon_mock(session: Session, mock: MockAttempt) -> MockAttempt:
+    # Reconciling before this may have committed (releasing the caller's
+    # lock), so lock and re-read before deciding.
+    mock = _lock_mock(session, mock)
     if mock.status == "abandoned":
         return mock
     if mock.status == "completed":
         raise HTTPException(status_code=409, detail="A completed mock can't be abandoned.")
     now = datetime.now(timezone.utc)
     for attempt in module_attempts(session, mock).values():
-        if attempt is not None and attempt.status == "in_progress":
+        if attempt is None:
+            continue
+        # Lock and re-read: a submit that is finishing right now holds this
+        # lock, and once it commits the attempt is final and must be left
+        # alone (cancelling it would hit the final-attempt trigger).
+        attempt = _lock_attempt(session, attempt)
+        if attempt.status == "in_progress":
             attempt.status = "cancelled"
             attempt.updated_at = now
             session.add(attempt)

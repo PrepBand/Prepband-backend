@@ -290,6 +290,7 @@ def _apply_fields(session: Session, resource: Resource, body: ResourceFields) ->
         new_key = data["cover_key"]
         if new_key != resource.cover_key:
             if new_key is not None:
+                _require_unused_key(session, resource, new_key)
                 extension = new_key.rsplit(".", 1)[-1]
                 r2.verify_object(r2.require_bucket(), new_key, "cover", COVER_EXT_TYPES.get(extension, ""))
             if resource.cover_key:
@@ -300,6 +301,7 @@ def _apply_fields(session: Session, resource: Resource, body: ResourceFields) ->
         new_key = data["file_key"]
         if new_key != resource.file_key:
             if new_key is not None:
+                _require_unused_key(session, resource, new_key)
                 content_type = data.get("file_content_type") or ""
                 allowed = KIND_TYPES.get(resource.kind, set())
                 if content_type not in allowed:
@@ -334,11 +336,29 @@ def _apply_fields(session: Session, resource: Resource, body: ResourceFields) ->
     return stale
 
 
-def _delete_objects(keys: list[str]) -> None:
+def _key_owners(session: Session, key: str, exclude_id: UUID | None = None):
+    query = select(Resource.id).where(or_(Resource.cover_key == key, Resource.file_key == key))
+    if exclude_id is not None:
+        query = query.where(Resource.id != exclude_id)
+    return session.exec(query).first()
+
+
+def _require_unused_key(session: Session, resource: Resource, key: str) -> None:
+    """Each uploaded object belongs to one resource: cleanup deletes an
+    object when its resource drops it, which would break a second owner."""
+
+    if _key_owners(session, key, exclude_id=resource.id) is not None:
+        raise HTTPException(status_code=409, detail="That upload is already used by another resource. Upload the file again.")
+
+
+def _delete_objects(session: Session, keys: list[str]) -> None:
+    """Deletes R2 objects no resource references any more (after commit)."""
+
     bucket = r2.get_bucket()
     if bucket:
-        for key in keys:
-            bucket.delete(key)
+        for key in dict.fromkeys(keys):
+            if _key_owners(session, key) is None:
+                bucket.delete(key)
 
 
 # --- categories ----------------------------------------------------------------------
@@ -517,7 +537,7 @@ def admin_update_resource(
     session.add(resource)
     session.commit()
     session.refresh(resource)
-    _delete_objects(stale)
+    _delete_objects(session, stale)
     audit_note(request, resource_id=str(resource.id), changed=sorted(body.model_dump(exclude_unset=True)))
     return _to_out(resource, _category_or_404(session, resource.category_id), r2.get_bucket())
 
@@ -551,5 +571,5 @@ def admin_delete_resource(
     title = resource.title
     session.delete(resource)
     session.commit()
-    _delete_objects(keys)
+    _delete_objects(session, keys)
     audit_note(request, resource_id=str(resource_id), title=title)

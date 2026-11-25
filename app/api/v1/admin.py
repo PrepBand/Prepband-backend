@@ -29,6 +29,7 @@ from ...schemas.content import (
 from ...services.audit import audit_note
 from ...services.content_io import TestDoc, export_test, import_test, load_tree, validate_for_publish
 from ...services.rate_limit import admin_bulk_limiter, per_user
+from .admin_content import lock_test_version
 
 router = APIRouter()
 
@@ -148,7 +149,11 @@ def publish_test(
     session: Session = Depends(get_session),
 ) -> TestOut:
     test = _get_test_or_404(session, test_id)
-    if test.status != "draft":
+    # Lock the version first (the same lock every content write takes), so
+    # no edit can land between the checks below and the freeze.
+    locked = lock_test_version(session, test.current_version_id) if test.current_version_id else None
+    session.refresh(test)
+    if test.status != "draft" or (locked is not None and locked.status != "draft"):
         raise HTTPException(status_code=409, detail="Only a draft test can be published.")
 
     # FR-ADMIN-03 publish validation: every section has questions, every

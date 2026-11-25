@@ -6,10 +6,12 @@ download them, so this makes a copy you own:
     python -m scripts.backup                 # both kinds below
     python -m scripts.backup --content-only  # no pg_dump needed
 
-  1. backups/<timestamp>/database.sql - a full `pg_dump` of the public
-     schema (tables, data, RLS policies, triggers), if pg_dump is
-     installed. Restore with psql into an EMPTY project; see
-     docs/RUNBOOK.md "Restore" before ever doing that.
+  1. backups/<timestamp>/auth.sql and database.sql - data-only `pg_dump`s
+     of the sign-in accounts (auth.users, auth.identities) and of the
+     public schema, if pg_dump is installed. The schema itself comes from
+     database/migrations, so a restore applies the migrations, then loads
+     auth.sql (keeping every user id) and then database.sql; see
+     docs/RUNBOOK.md "Full restore" before ever doing that.
   2. backups/<timestamp>/content/*.json - every test as a prepband-test/v1
      document (the seed format). Re-import any of them through
      Admin > Tests > Import JSON or scripts/seed_content.py.
@@ -41,23 +43,34 @@ def _pg_url(url: str) -> str:
     return re.sub(r"^postgresql\+\w+://", "postgresql://", url)
 
 
+# Data only: the schema is database/migrations, and a dump that also
+# carried it would clash with the migrated schema on restore. Auth accounts
+# are a separate file so a restore can load them first and keep their ids,
+# which every student row references.
+DUMPS = {
+    "auth.sql": ["--table=auth.users", "--table=auth.identities"],
+    "database.sql": ["--schema=public"],
+}
+
+
 def dump_database(url: str, out: Path) -> bool:
     pg_dump = shutil.which("pg_dump")
     if not pg_dump:
-        print("  skip database.sql: pg_dump is not installed (install the PostgreSQL client tools).")
+        print("  skip database dump: pg_dump is not installed (install the PostgreSQL client tools).")
         return False
-    target = out / "database.sql"
-    result = subprocess.run(
-        [pg_dump, "--schema=public", "--no-owner", "--no-privileges", "--file", str(target), _pg_url(url)],
-        capture_output=True,
-        text=True,
-        check=False,
-    )
-    if result.returncode != 0:
-        # Never echo the connection string; pg_dump's stderr doesn't include it.
-        print(f"  pg_dump failed: {result.stderr.strip()[:500]}")
-        return False
-    print(f"  ok   {target} ({target.stat().st_size // 1024} KB)")
+    for name, selection in DUMPS.items():
+        target = out / name
+        result = subprocess.run(
+            [pg_dump, "--data-only", *selection, "--no-owner", "--no-privileges", "--file", str(target), _pg_url(url)],
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        if result.returncode != 0:
+            # Never echo the connection string; pg_dump's stderr doesn't include it.
+            print(f"  pg_dump of {name} failed: {result.stderr.strip()[:500]}")
+            return False
+        print(f"  ok   {target} ({target.stat().st_size // 1024} KB)")
     return True
 
 
@@ -89,9 +102,15 @@ def main() -> int:
     out = ROOT / datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
     out.mkdir(parents=True)
     print(f"Backing up to {out}")
+    dumped = True
     if not args.content_only:
-        dump_database(url, out)
+        dumped = dump_database(url, out)
+    # The content export still runs, so a failed dump keeps what it can.
     export_content(url, out)
+    if not dumped:
+        print("FAILED: the database dump didn't complete, so this backup has no student data.")
+        print("Fix pg_dump and run it again, or pass --content-only to back up test content only.")
+        return 1
     print("Done. Keep this folder somewhere private: it contains student data.")
     return 0
 

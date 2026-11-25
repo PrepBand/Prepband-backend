@@ -57,10 +57,23 @@ def _get_test_or_404(session: Session, test_id: UUID) -> Test:
     return test
 
 
+def lock_test_version(session: Session, version_id: UUID) -> TestVersion | None:
+    """Reads a test version with a row lock held until the transaction ends.
+
+    Every content write and publish_test take this lock first, so a write
+    that has seen a draft finishes before a publish can freeze the version,
+    and a publish that has frozen it makes later writes see "published"
+    (the database trigger only guards the test_versions row itself)."""
+
+    return session.exec(
+        select(TestVersion).where(TestVersion.id == version_id).with_for_update().execution_options(populate_existing=True)
+    ).first()
+
+
 def _get_draft_version_for_test(session: Session, test: Test) -> TestVersion:
     if test.current_version_id is None:
         raise HTTPException(status_code=409, detail="Test has no version to add content to.")
-    version = session.get(TestVersion, test.current_version_id)
+    version = lock_test_version(session, test.current_version_id)
     if version is None or version.status != "draft":
         raise HTTPException(status_code=409, detail="Only a draft version can be edited.")
     return version
@@ -74,7 +87,7 @@ def _get_section_or_404(session: Session, section_id: UUID) -> Section:
 
 
 def _require_section_version_draft(session: Session, section: Section) -> None:
-    version = session.get(TestVersion, section.test_version_id)
+    version = lock_test_version(session, section.test_version_id)
     if version is None or version.status != "draft":
         raise HTTPException(status_code=409, detail="Only a draft version can be edited.")
 

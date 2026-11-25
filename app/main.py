@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
 from .api.v1.router import router as v1_router
+from .core.body_limit import TOO_LARGE, BodySizeLimitMiddleware
 from .core.config import get_settings
 from .core.errors import error_body, register_exception_handlers
 from .services.audit import install_audit_middleware
@@ -34,13 +35,19 @@ SECURITY_HEADERS = {
 }
 
 
-# Order matters: the audit middleware is added first so it sits *inside*
-# the security middleware below and sees the final status of every request.
+# Order matters: the first one added is the innermost. The streaming body
+# limit sits innermost, right around the routes that read the body, so its
+# 413 still passes through the audit, security and CORS layers. The audit
+# middleware sits *inside* the security middleware below and sees the final
+# status of every request.
+app.add_middleware(BodySizeLimitMiddleware, max_bytes=MAX_BODY_BYTES)
 install_audit_middleware(app)
 
 
 @app.middleware("http")
 async def security_middleware(request: Request, call_next):
+    # Fast path for a declared size; BodySizeLimitMiddleware also counts the
+    # bytes that actually arrive (chunked requests have no Content-Length).
     length = request.headers.get("content-length")
     if length is not None:
         try:
@@ -48,7 +55,7 @@ async def security_middleware(request: Request, call_next):
         except ValueError:
             too_big = True
         if too_big:
-            response = JSONResponse(status_code=413, content=error_body(413, "The request is too large."))
+            response = JSONResponse(status_code=413, content=error_body(413, TOO_LARGE))
             response.headers.update(SECURITY_HEADERS)
             return response
 

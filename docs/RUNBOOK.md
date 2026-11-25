@@ -99,10 +99,13 @@ Migrations are additive, so the old app keeps working against the new schema.
 ### First release of Phases 2-6 (still to do)
 
 Everything from Phase 2 onwards sits on branch `phase2-content-engine` in both
-repos, **uncommitted**. Migrations 0000-0014 are all live (0011-0014
+repos, **uncommitted**. Migrations 0000-0015 are all live (0011-0015
 applied 2026-11-25; 0013 closed students' ability to rewrite their own
-profile email; 0014 is the resource library). Steps 1 and 3-8 above remain,
+profile email; 0014 is the resource library; 0015 removed browsers' direct
+writes to attempts, answers, mocks and certificates and hid transcripts and
+examiner notes from direct reads). Steps 1 and 3-8 above remain,
 plus:
+
 
 - **finish the private resource bucket** (section 10): the bucket and its
   CORS rule exist; create its API token and set the four `R2_*` variables on
@@ -189,12 +192,12 @@ point-in-time recovery. Make your own copy:
 
 ```bash
 cd prepband-backend
-python -m scripts.backup                 # pg_dump of public + every test as JSON
+python -m scripts.backup                 # data-only pg_dump (accounts + public) + every test as JSON
 python -m scripts.backup --content-only  # without pg_dump installed
 ```
 
 Output goes to `backups/<UTC timestamp>/` (gitignored: it contains student
-data). Store it somewhere private. **Suggested cadence:** weekly, and always
+data and password hashes). Store it somewhere private. **Suggested cadence:** weekly, and always
 before applying a migration.
 
 **Restore content only** (lost or broken tests): Admin > Tests > Import JSON
@@ -202,19 +205,37 @@ with a file from `backups/<ts>/content/`, or
 `python -m scripts.seed_content` after copying the files into `database/seeds/`.
 Imports arrive as drafts; check them and publish.
 
-**Full restore** (lost database). This has never been rehearsed, so plan for downtime:
+**Full restore** (lost database). This has never been rehearsed, so plan for downtime.
+It needs a backup with both `auth.sql` and `database.sql` (data only; backups
+made before 2026-11-25 have a single `database.sql` that also holds the schema
+and no accounts, so take a fresh one while you still can).
 
 1. Create a **new, empty** Supabase project (never restore over a live one).
-2. Apply `database/migrations/0000`-latest in order. `0000_phase1_baseline.sql`
-   holds the Phase 1 schema (`profiles`, `user_roles`, onboarding tables, RPCs),
-   copied from the live migration history. The `tests/postgres` suite builds a
-   database exactly this way on every CI run, so the folder is known to apply.
-3. `psql "<new pooler url>" -f backups/<ts>/database.sql` loads the data.
-4. Auth users are **not** in the `public` dump. They live in Supabase's `auth`
-   schema and must be restored from Supabase's own backup (support request on
-   paid plans) or re-created by users signing up again.
-5. Point `DATABASE_URL`, `VITE_SUPABASE_*` and the Edge Function secrets at the
-   new project, release, smoke test.
+2. Apply `database/migrations/0000`-latest in order. They are the schema; the
+   dumps hold data only. `0000_phase1_baseline.sql` holds the Phase 1 schema
+   (`profiles`, `user_roles`, onboarding tables, RPCs), copied from the live
+   migration history. The `tests/postgres` suite builds a database exactly this
+   way on every CI run, so the folder is known to apply.
+3. Clear the rows the migrations seeded, since the dump has its own copies:
+   ```sql
+   truncate public.examiner_phrases, public.resource_categories cascade;
+   ```
+4. Load the accounts first, then the data, in one transaction, using the
+   **direct** connection string (not the pooler):
+   ```bash
+   psql "<new direct url>" --single-transaction -v ON_ERROR_STOP=1      -c "set session_replication_role = replica"      -f backups/<ts>/auth.sql      -f backups/<ts>/database.sql
+   ```
+   `auth.sql` restores every user with their **original id**, which all
+   student rows reference; that's why it goes first. `replica` turns triggers
+   off for this load, so the signup triggers don't create a second profile and
+   role for each restored user, and the frozen-attempt rules don't block
+   loading finished attempts. Any error rolls the whole load back.
+5. Check it: row counts in `profiles`, `attempts` and `certificates` match the
+   old project, and a known account can sign in with its old password.
+6. Re-create what isn't in the database: Auth settings (redirect URLs, email
+   templates, SMTP), Storage/R2 settings and Edge Function secrets. Point
+   `DATABASE_URL`, `VITE_SUPABASE_*` and the Edge Function secrets at the new
+   project, release, smoke test.
 
 ---
 

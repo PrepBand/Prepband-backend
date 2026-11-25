@@ -217,6 +217,14 @@ def bulk_edit_questions(
     ).all()
 
     if body.action == "renumber":
+        # Two passes: first move every row to a free negative number, then
+        # to its final 1..n. Assigning the final numbers directly can hit
+        # unique (section_id, display_order) mid-way, e.g. 0,1,2 -> 1,2,3
+        # when the old 0 is updated before the old 1.
+        for index, question in enumerate(questions, start=1):
+            question.display_order = -index
+            session.add(question)
+        session.flush()
         for index, question in enumerate(questions, start=1):
             question.display_order = index
             session.add(question)
@@ -251,12 +259,22 @@ def bulk_edit_questions(
 # --- CSV import / export -------------------------------------------------
 
 
+def _plain_cell_ok(value: str) -> bool:
+    """A string that _cell_in reads back unchanged as one plain item."""
+
+    text = value.strip()
+    return bool(text) and text == value and "|" not in text and text[0] not in '[{"'
+
+
 def _cell_out(value: Any) -> str:
-    """Lists of plain strings become `a|b|c`; anything else is JSON."""
+    """Lists of plain strings become `a|b|c`, a plain string is written as
+    itself (a scalar key such as "True"); anything else is JSON."""
 
     if value is None:
         return ""
-    if isinstance(value, list) and all(isinstance(v, str) and "|" not in v for v in value):
+    if isinstance(value, str) and _plain_cell_ok(value):
+        return value
+    if isinstance(value, list) and all(isinstance(v, str) and _plain_cell_ok(v) for v in value):
         return "|".join(value)
     return json.dumps(value, ensure_ascii=False)
 
@@ -265,7 +283,9 @@ def _cell_in(value: str | None) -> Any:
     text = (value or "").strip()
     if not text:
         return None
-    if text[0] in "[{":
+    if text[0] in '[{"':
+        # '"' covers JSON strings, e.g. a scalar exported before plain
+        # strings were written as plain text.
         return json.loads(text)
     return [part.strip() for part in text.split("|") if part.strip()]
 
@@ -524,9 +544,9 @@ def test_analytics(
         for question, key, version_id, section_order in rows:
             answers = responses.get(question.id, [])
             base = by_version_finished.get(version_id, 0)
-            correct = sum(1 for a in answers if key and is_correct(a, key.correct_answers, key.accepted_aliases, question.options))
+            correct = sum(1 for a in answers if key and is_correct(a, key.correct_answers, key.accepted_aliases, question.options, question.type))
             wrong = Counter(
-                _answer_text(a) for a in answers if not (key and is_correct(a, key.correct_answers, key.accepted_aliases, question.options))
+                _answer_text(a) for a in answers if not (key and is_correct(a, key.correct_answers, key.accepted_aliases, question.options, question.type))
             )
             questions_out.append(
                 {

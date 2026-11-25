@@ -6,8 +6,8 @@ can forget to log. It records:
 
   * every admin write (POST/PUT/PATCH/DELETE under /admin) - success or
     failure - with the acting admin;
-  * sensitive admin reads: exporting a test (answer keys included) and the
-    user list;
+  * sensitive admin reads: exporting a test or a section's questions
+    (answer keys included), the user list and the certificate list;
   * every refused attempt to use an admin route by a signed-in non-admin.
 
 The actor comes from `require_admin` (app/core/roles.py), which stores the
@@ -39,7 +39,13 @@ logger = logging.getLogger(__name__)
 API_PREFIX = "/api/v1"
 WRITE_METHODS = {"POST", "PUT", "PATCH", "DELETE"}
 # Reads that expose answer keys or personal data in bulk.
-SENSITIVE_READS = {"/admin/tests/{test_id}/export", "/admin/users", "/admin/audit"}
+SENSITIVE_READS = {
+    "/admin/tests/{test_id}/export",
+    "/admin/sections/{section_id}/questions.csv",  # answer keys
+    "/admin/users",
+    "/admin/certificates",  # students' names and emails
+    "/admin/audit",
+}
 
 # Refused attempts are logged, but one account can't flood the table.
 _denied_limiter = RateLimiter(20, 60, "audit flood guard")
@@ -103,55 +109,64 @@ def _write(app: FastAPI, entry: AdminAuditLog) -> None:
 def install_audit_middleware(app: FastAPI) -> None:
     @app.middleware("http")
     async def admin_audit(request: Request, call_next):
-        response = await call_next(request)
-
-        if not request.url.path.startswith(f"{API_PREFIX}/admin"):
-            return response
-        actor_id = getattr(request.state, "audit_actor_id", None)
-        if actor_id is None:
-            return response  # never reached the role check (401, 404 route, ...)
-
-        template = _template(request)
-        method = request.method.upper()
-        status_code = response.status_code
-        outcome = _outcome(status_code)
-        if method not in WRITE_METHODS and template not in SENSITIVE_READS and outcome != "denied":
-            return response
-        if outcome == "denied":
-            try:
-                _denied_limiter.check(actor_id)
-            except Exception:
-                return response
-
-        entity_type, entity_id = _entity(template, dict(request.path_params))
-        details = dict(getattr(request.state, "audit_details", None) or {})
-        if request.url.query:
-            details.setdefault("query", request.url.query[:300])
         try:
-            actor_uuid = UUID(actor_id)
-        except ValueError:
-            actor_uuid = None
-            details["actor"] = str(actor_id)[:100]
-
-        entry = AdminAuditLog(
-            id=uuid4(),
-            actor_id=actor_uuid,
-            actor_role=getattr(request.state, "audit_actor_role", None),
-            action=f"{method} {template}"[:200],
-            method=method,
-            path=request.url.path[:500],
-            entity_type=entity_type,
-            entity_id=entity_id,
-            outcome=outcome,
-            status_code=status_code,
-            details=details,
-            created_at=datetime.now(timezone.utc),
-        )
-        try:
-            await run_in_threadpool(_write, app, entry)
-        except Exception:  # noqa: BLE001 - logging must never break the request
-            logger.warning("Could not write admin audit entry for %s %s", method, template, exc_info=True)
+            response = await call_next(request)
+        except Exception:
+            # An unexpected error unwinds through this middleware before the
+            # outer generic handler turns it into a 500, so log the failure
+            # here, then let the error carry on to that handler.
+            await _record(app, request, 500)
+            raise
+        await _record(app, request, response.status_code)
         return response
+
+
+async def _record(app: FastAPI, request: Request, status_code: int) -> None:
+    if not request.url.path.startswith(f"{API_PREFIX}/admin"):
+        return
+    actor_id = getattr(request.state, "audit_actor_id", None)
+    if actor_id is None:
+        return  # never reached the role check (401, 404 route, ...)
+
+    template = _template(request)
+    method = request.method.upper()
+    outcome = _outcome(status_code)
+    if method not in WRITE_METHODS and template not in SENSITIVE_READS and outcome != "denied":
+        return
+    if outcome == "denied":
+        try:
+            _denied_limiter.check(actor_id)
+        except Exception:
+            return
+
+    entity_type, entity_id = _entity(template, dict(request.path_params))
+    details = dict(getattr(request.state, "audit_details", None) or {})
+    if request.url.query:
+        details.setdefault("query", request.url.query[:300])
+    try:
+        actor_uuid = UUID(actor_id)
+    except ValueError:
+        actor_uuid = None
+        details["actor"] = str(actor_id)[:100]
+
+    entry = AdminAuditLog(
+        id=uuid4(),
+        actor_id=actor_uuid,
+        actor_role=getattr(request.state, "audit_actor_role", None),
+        action=f"{method} {template}"[:200],
+        method=method,
+        path=request.url.path[:500],
+        entity_type=entity_type,
+        entity_id=entity_id,
+        outcome=outcome,
+        status_code=status_code,
+        details=details,
+        created_at=datetime.now(timezone.utc),
+    )
+    try:
+        await run_in_threadpool(_write, app, entry)
+    except Exception:  # noqa: BLE001 - logging must never break the request
+        logger.warning("Could not write admin audit entry for %s %s", method, template, exc_info=True)
 
 
 def reset_audit_limits() -> None:

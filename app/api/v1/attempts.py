@@ -7,7 +7,7 @@ from datetime import date, datetime, time, timedelta, timezone
 from uuid import UUID, uuid4
 
 from fastapi import APIRouter, Depends, HTTPException, Query
-from sqlalchemy import func, or_
+from sqlalchemy import func, or_, text
 from sqlmodel import Session, select
 
 from ...core.security import get_current_user_id
@@ -349,11 +349,45 @@ def create_attempt(
         if existing.status == "in_progress":
             return to_attempt_out(existing)
 
+    # Two simultaneous starts could both get here and create two attempts.
+    # Serialize starts per student (the lock ends with the commit below),
+    # then look again for an attempt the other request just created.
+    _lock_attempt_starts(session, student_id)
+    existing = _open_standalone_attempt(session, student_id, test.current_version_id)
+    if existing is not None:
+        return to_attempt_out(existing)
+
     attempt = new_attempt(student_id, test, test.current_version_id, body.mode)
     session.add(attempt)
     session.commit()
     session.refresh(attempt)
     return to_attempt_out(attempt)
+
+
+def _lock_attempt_starts(session: Session, student_id: UUID) -> None:
+    """A transaction-scoped Postgres advisory lock per student. (SQLite,
+    used by the unit tests, runs one writer at a time anyway.)"""
+
+    if session.get_bind().dialect.name != "postgresql":
+        return
+    session.exec(
+        text("select pg_advisory_xact_lock(hashtextextended(:key, 0))").bindparams(key=f"attempt-start:{student_id}")
+    )
+
+
+def _open_standalone_attempt(session: Session, student_id: UUID, version_id: UUID) -> Attempt | None:
+    """The student's open attempt on this version that isn't part of a mock."""
+
+    candidates = session.exec(
+        select(Attempt)
+        .where(
+            Attempt.student_id == student_id,
+            Attempt.test_version_id == version_id,
+            Attempt.status == "in_progress",
+        )
+        .execution_options(populate_existing=True)
+    ).all()
+    return next((a for a in candidates if mock_for_attempt(session, a.id) is None), None)
 
 
 def new_attempt(student_id: UUID, test: Test, version_id: UUID, mode: str) -> Attempt:
@@ -877,7 +911,7 @@ def get_results(
         else:
             # Attempts submitted before 0012 have no frozen marks.
             awarded = marks_for(question, answer_key, your_answer)
-            correct = is_correct(your_answer, answer_key.correct_answers, answer_key.accepted_aliases, question.options)
+            correct = is_correct(your_answer, answer_key.correct_answers, answer_key.accepted_aliases, question.options, question.type)
         question_results.append(
             ResultQuestion(
                 question_id=str(question.id),

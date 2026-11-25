@@ -178,7 +178,7 @@ def check_retry(
     key = session.exec(select(AnswerKey).where(AnswerKey.question_id == question_id)).first()
     if not taken or key is None:
         raise HTTPException(status_code=404, detail="Question not found.")
-    share = credit(body.response, key.correct_answers, key.accepted_aliases, question.options)
+    share = credit(body.response, key.correct_answers, key.accepted_aliases, question.options, question.type)
     return RetryOut(
         correct=share >= 1.0,
         credit=round(share, 2),

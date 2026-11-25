@@ -188,7 +188,7 @@ def question_problem(qtype: str, options: Any, correct_answers: Any) -> str | No
             return None
         allowed = {"True", "False", "Not Given"} if qtype == "true_false_not_given" else {"Yes", "No", "Not Given"}
         value = correct_answers[0] if isinstance(correct_answers, list) and len(correct_answers) == 1 else correct_answers
-        if value not in allowed:
+        if not isinstance(value, str) or value not in allowed:
             return f"answer must be one of {', '.join(sorted(allowed))}."
         return None
 
@@ -499,8 +499,12 @@ def validate_for_publish(session: Session, test: Test) -> list[str]:
     for index, node in enumerate(tree, start=1):
         section = node["section"]
         label = f"Section {index}"
-        if test.module in ("writing", "speaking") and section.module != test.module:
+        # Every section must match its test: an objective (Reading/Listening)
+        # test with only a Writing section would otherwise skip the question
+        # checks and publish with a maximum score of zero.
+        if section.module != test.module:
             problems.append(f"{label} must be a {test.module.capitalize()} section in a {test.module.capitalize()} test.")
+            continue
         if section.module == "writing":
             if not node["writing_prompts"]:
                 problems.append(f"{label} is Writing but has no writing task.")

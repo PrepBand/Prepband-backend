@@ -126,6 +126,12 @@ def start_mock_module(
     student_id = UUID(user_id)
     mock = require_owned_mock(session, mock_id, student_id, lock=True)
     mock = _reconciled(session, mock)
+    # Reconciling can expire a module (or complete the mock), and that
+    # commits, which releases the lock. Take it again and re-read before
+    # deciding, so two requests advancing after the same expiry can't both
+    # create the next module's attempt; this lock is then held until the
+    # new attempt is attached and committed below.
+    mock = require_owned_mock(session, mock_id, student_id, lock=True)
     attempts = module_attempts(session, mock)
 
     existing = attempts[module]

@@ -117,10 +117,49 @@ def _is_text_key(correct_answers: Any) -> bool:
     return isinstance(correct_answers, list) and all(isinstance(item, str) for item in correct_answers)
 
 
-def credit(response: Any, correct_answers: Any, accepted_aliases: Any | None, options: Any = None) -> float:
-    """The share of a question's marks a response earns, from 0.0 to 1.0."""
+# The response shape each question type's input sends (QuestionRenderer in
+# the frontend). A response of any other shape earns nothing: the shape
+# must never pick a more generous marking rule than the question's type.
+_STRING_TYPES = {
+    "multiple_choice",
+    "true_false_not_given",
+    "yes_no_not_given",
+    "short_answer",
+    "sentence_completion",
+    "gap_fill",
+    "form_completion",
+    "note_completion",
+    "table_completion",
+}
 
-    if response is None:
+
+def _shape_ok(question_type: str | None, response: Any) -> bool:
+    if question_type is None:
+        return True
+    if question_type in _STRING_TYPES:
+        return isinstance(response, str)
+    if question_type == "multiple_select":
+        return isinstance(response, list)
+    if question_type == "matching":
+        return isinstance(response, dict)
+    return True
+
+
+def credit(
+    response: Any,
+    correct_answers: Any,
+    accepted_aliases: Any | None,
+    options: Any = None,
+    question_type: str | None = None,
+) -> float:
+    """The share of a question's marks a response earns, from 0.0 to 1.0.
+
+    Pass `question_type` (every production caller does): a response whose
+    shape doesn't match the type earns 0, so a single string can't be marked
+    as a text answer on a multiple-select question, and a list can't skip a
+    text question's word limit."""
+
+    if response is None or not _shape_ok(question_type, response):
         return 0.0
 
     if isinstance(response, str) and _is_text_key(correct_answers):
@@ -149,10 +188,16 @@ def credit(response: Any, correct_answers: Any, accepted_aliases: Any | None, op
     return 1.0 if _deep_normalize(response) == _deep_normalize(correct_answers) else 0.0
 
 
-def is_correct(response: Any, correct_answers: Any, accepted_aliases: Any | None, options: Any = None) -> bool:
+def is_correct(
+    response: Any,
+    correct_answers: Any,
+    accepted_aliases: Any | None,
+    options: Any = None,
+    question_type: str | None = None,
+) -> bool:
     """True if `response` earns full marks."""
 
-    return credit(response, correct_answers, accepted_aliases, options) >= 1.0
+    return credit(response, correct_answers, accepted_aliases, options, question_type) >= 1.0
 
 
 def marks_for(question: Any, answer_key: Any | None, response: Any) -> float:
@@ -160,7 +205,13 @@ def marks_for(question: Any, answer_key: Any | None, response: Any) -> float:
 
     if answer_key is None:
         return 0.0
-    share = credit(response, answer_key.correct_answers, answer_key.accepted_aliases, getattr(question, "options", None))
+    share = credit(
+        response,
+        answer_key.correct_answers,
+        answer_key.accepted_aliases,
+        getattr(question, "options", None),
+        getattr(question, "type", None),
+    )
     return round(question.marks * share, 2)
 
 
