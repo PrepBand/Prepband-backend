@@ -340,7 +340,11 @@ def _key_owners(session: Session, key: str, exclude_id: UUID | None = None):
     query = select(Resource.id).where(or_(Resource.cover_key == key, Resource.file_key == key))
     if exclude_id is not None:
         query = query.where(Resource.id != exclude_id)
-    return session.exec(query).first()
+    # No autoflush: _apply_fields calls this mid-edit (e.g. kind already
+    # changed to pdf, file_key not yet set), and flushing that half-edited
+    # row would trip resources_published_complete.
+    with session.no_autoflush:
+        return session.exec(query).first()
 
 
 def _require_unused_key(session: Session, resource: Resource, key: str) -> None:

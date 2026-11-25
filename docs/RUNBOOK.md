@@ -206,9 +206,10 @@ with a file from `backups/<ts>/content/`, or
 Imports arrive as drafts; check them and publish.
 
 **Full restore** (lost database). This has never been rehearsed, so plan for downtime.
-It needs a backup with both `auth.sql` and `database.sql` (data only; backups
-made before 2026-11-25 have a single `database.sql` that also holds the schema
-and no accounts, so take a fresh one while you still can).
+It needs a backup made on or after 2026-11-26, whose `database.sql` holds data
+only, accounts included, all from one snapshot. Older backups hold the schema
+and no accounts (or split accounts into a separate `auth.sql` taken at a
+different moment), so take a fresh one while you still can.
 
 1. Create a **new, empty** Supabase project (never restore over a live one).
 2. Apply `database/migrations/0000`-latest in order. They are the schema; the
@@ -220,16 +221,17 @@ and no accounts, so take a fresh one while you still can).
    ```sql
    truncate public.examiner_phrases, public.resource_categories cascade;
    ```
-4. Load the accounts first, then the data, in one transaction, using the
-   **direct** connection string (not the pooler):
+4. Load the data in one transaction, using the **direct** connection string
+   (not the pooler):
    ```bash
-   psql "<new direct url>" --single-transaction -v ON_ERROR_STOP=1      -c "set session_replication_role = replica"      -f backups/<ts>/auth.sql      -f backups/<ts>/database.sql
+   psql "<new direct url>" --single-transaction -v ON_ERROR_STOP=1      -c "set session_replication_role = replica"      -f backups/<ts>/database.sql
    ```
-   `auth.sql` restores every user with their **original id**, which all
-   student rows reference; that's why it goes first. `replica` turns triggers
-   off for this load, so the signup triggers don't create a second profile and
-   role for each restored user, and the frozen-attempt rules don't block
-   loading finished attempts. Any error rolls the whole load back.
+   It restores every user with their **original id**, which all student rows
+   reference, from the same snapshot as those rows. `replica` turns triggers
+   off for this load (foreign-key checks included, which is why the snapshot
+   matters), so the signup triggers don't create a second profile and role
+   for each restored user, and the frozen-attempt rules don't block loading
+   finished attempts. Any error rolls the whole load back.
 5. Check it: row counts in `profiles`, `attempts` and `certificates` match the
    old project, and a known account can sign in with its old password.
 6. Re-create what isn't in the database: Auth settings (redirect URLs, email

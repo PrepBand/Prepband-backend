@@ -6,11 +6,12 @@ download them, so this makes a copy you own:
     python -m scripts.backup                 # both kinds below
     python -m scripts.backup --content-only  # no pg_dump needed
 
-  1. backups/<timestamp>/auth.sql and database.sql - data-only `pg_dump`s
-     of the sign-in accounts (auth.users, auth.identities) and of the
-     public schema, if pg_dump is installed. The schema itself comes from
-     database/migrations, so a restore applies the migrations, then loads
-     auth.sql (keeping every user id) and then database.sql; see
+  1. backups/<timestamp>/database.sql - one data-only `pg_dump` of the
+     sign-in accounts (auth.users, auth.identities) and every public table,
+     if pg_dump is installed. One pg_dump run reads everything from a
+     single snapshot, so accounts and student rows always match. The schema
+     itself comes from database/migrations, so a restore applies the
+     migrations and then loads this file (keeping every user id); see
      docs/RUNBOOK.md "Full restore" before ever doing that.
   2. backups/<timestamp>/content/*.json - every test as a prepband-test/v1
      document (the seed format). Re-import any of them through
@@ -44,33 +45,31 @@ def _pg_url(url: str) -> str:
 
 
 # Data only: the schema is database/migrations, and a dump that also
-# carried it would clash with the migrated schema on restore. Auth accounts
-# are a separate file so a restore can load them first and keep their ids,
-# which every student row references.
-DUMPS = {
-    "auth.sql": ["--table=auth.users", "--table=auth.identities"],
-    "database.sql": ["--schema=public"],
-}
+# carried it would clash with the migrated schema on restore. The accounts
+# go in the same run as the public tables: one pg_dump reads from one
+# snapshot, so a signup or deletion mid-backup can't leave a profile
+# without its account (or the reverse). Restore keeps their ids, which
+# every student row references.
+DUMP_TABLES = ["--table=auth.users", "--table=auth.identities", "--table=public.*"]
 
 
 def dump_database(url: str, out: Path) -> bool:
     pg_dump = shutil.which("pg_dump")
     if not pg_dump:
-        print("  skip database dump: pg_dump is not installed (install the PostgreSQL client tools).")
+        print("  skip database.sql: pg_dump is not installed (install the PostgreSQL client tools).")
         return False
-    for name, selection in DUMPS.items():
-        target = out / name
-        result = subprocess.run(
-            [pg_dump, "--data-only", *selection, "--no-owner", "--no-privileges", "--file", str(target), _pg_url(url)],
-            capture_output=True,
-            text=True,
-            check=False,
-        )
-        if result.returncode != 0:
-            # Never echo the connection string; pg_dump's stderr doesn't include it.
-            print(f"  pg_dump of {name} failed: {result.stderr.strip()[:500]}")
-            return False
-        print(f"  ok   {target} ({target.stat().st_size // 1024} KB)")
+    target = out / "database.sql"
+    result = subprocess.run(
+        [pg_dump, "--data-only", *DUMP_TABLES, "--no-owner", "--no-privileges", "--file", str(target), _pg_url(url)],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    if result.returncode != 0:
+        # Never echo the connection string; pg_dump's stderr doesn't include it.
+        print(f"  pg_dump failed: {result.stderr.strip()[:500]}")
+        return False
+    print(f"  ok   {target} ({target.stat().st_size // 1024} KB)")
     return True
 
 

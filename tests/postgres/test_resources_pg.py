@@ -138,3 +138,23 @@ def test_the_database_refuses_an_incomplete_published_resource(pg):
             (category_id,),
         )
 
+
+
+def test_a_published_link_can_become_a_pdf_in_one_edit(pg_client, pg, bucket):
+    """PR #2 review: the new upload-ownership query autoflushed the half-edited
+    row (kind pdf, no file yet), which resources_published_complete refused."""
+
+    _seed_categories(pg)
+    admin = create_user(pg, "Ada Admin", role="admin")
+    resource_id = _publish(
+        pg_client, admin, bucket, "strategy-guides", "Band descriptors",
+        kind="link", file_key=None, file_content_type=None, file_name=None, external_url="https://example.org/descriptors",
+    )
+    file_key = _upload(pg_client, admin, bucket, "file", "application/pdf", PDF)
+    changed = pg_client.patch(
+        f"/api/v1/admin/resources/{resource_id}",
+        json={"kind": "pdf", "file_key": file_key, "file_content_type": "application/pdf", "file_name": "descriptors.pdf"},
+        headers=as_user(admin),
+    )
+    assert changed.status_code == 200, changed.text
+    assert changed.json()["kind"] == "pdf" and changed.json()["file_key"] == file_key

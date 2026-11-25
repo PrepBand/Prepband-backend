@@ -197,6 +197,26 @@ def test_an_unexpected_admin_failure_is_still_audited(client, session, monkeypat
 # --- backup exit code ----------------------------------------------------------
 
 
+def test_backup_dumps_accounts_and_data_in_one_run(monkeypatch, tmp_path):
+    """PR #2 review: two pg_dump runs could see different moments, leaving a
+    profile without its account. One run reads one snapshot."""
+
+    from scripts import backup
+
+    calls = []
+    monkeypatch.setattr(backup.shutil, "which", lambda name: "pg_dump")
+
+    def fake_run(args, **_kwargs):
+        calls.append(args)
+        (tmp_path / "database.sql").write_text("-- data", encoding="utf-8")
+        return SimpleNamespace(returncode=0, stderr="")
+
+    monkeypatch.setattr(backup.subprocess, "run", fake_run)
+    assert backup.dump_database("postgresql://x/y", tmp_path) is True
+    assert len(calls) == 1
+    assert {"--data-only", "--table=auth.users", "--table=auth.identities", "--table=public.*"} <= set(calls[0])
+
+
 def test_backup_fails_when_the_database_dump_fails(monkeypatch, tmp_path):
     from scripts import backup
 
