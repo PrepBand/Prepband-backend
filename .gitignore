@@ -20,3 +20,10 @@ database/seeds/audio/
 
 # Local database/content backups (scripts/backup.py) contain student data.
 backups/
+
+# Supabase CLI local state, tool caches and local test databases
+supabase/.temp/
+supabase/.branches/
+.ruff_cache/
+*.sqlite3-journal
+pgdata/
