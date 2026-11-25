@@ -106,8 +106,48 @@ account: a plain signup gets `role: student` and a 403 from
   (`upload-avatar`) that talks to R2 directly — see `../CLAUDE.md`'s
   "Avatar storage (Cloudflare R2)" section. That prototype has been
   removed; this backend has no R2 credentials and shouldn't gain any.
-- **No test-engine endpoints yet** (attempts, responses, grading,
-  certificates). That's Phase 2+ per the spec's development plan.
+- **No stored certificate files.** Certificate PDFs (Phase 4) are rendered
+  on demand with ReportLab from the server's own attempt records and
+  streamed back; nothing is written to storage.
+
+## Full mock and certificates (Phase 4)
+
+- `POST /mocks` starts a full mock (or returns the open one), pinning the
+  newest published *mock* test version per module for the track.
+  `POST /mocks/{id}/modules/{module}/start` starts or resumes one section in
+  order (Listening → Reading → Writing → Speaking) as an exam-mode attempt.
+  `GET /mocks/{id}` reconciles expired sections and completes the mock once
+  all four are submitted or expired; `POST /mocks/{id}/complete` does the
+  same explicitly, and `POST /mocks/{id}/abandon` ends it early.
+  `GET /mocks/{id}/results` gives consolidated results: the overall band
+  is always "Not available" while Writing/Speaking are unassessed.
+- Completing a mock issues exactly one certificate (`PB-XXXX-XXXX-XXXX-XXXX`).
+  `GET /certificates`, `GET /certificates/{id}`, `GET /certificates/{id}/pdf`
+  (rate-limited), `PATCH /certificates/{id}` (public-verification consent
+  only). `GET /verify/{code}` is public and shows only ID, validity and issue
+  date for consented certificates. Admins: `GET /admin/certificates`,
+  `POST /admin/certificates/{id}/revoke`.
+- `GET /attempts/{id}/content` returns the exact version an attempt was
+  started against; `GET /me/attempts` is filtered and paginated;
+  `GET /me/progress` feeds the progress charts.
+
+## Tests and lint
+
+```bash
+pip install -r requirements-dev.txt
+python -m ruff check .   # lint (ruff.toml)
+python -m pytest         # API tests on SQLite, plus tests/postgres when a Postgres is available
+```
+
+The main suite runs the real app against a throwaway in-memory SQLite
+database with JWT verification replaced by a test header (`tests/conftest.py`).
+
+`tests/postgres` builds a fresh Postgres database from `database/migrations`
+(0000 is the Phase 1 baseline) plus a small Supabase stub, then checks what
+SQLite can't: triggers, row-level security, grants, account deletion and the
+row locks under simultaneous requests. It uses `TEST_DATABASE_URL` (CI starts
+a `postgres:17` service) or, locally, `pip install pgserver` for a throwaway
+server. Without either, those tests are skipped.
 
 ## Local dev
 
@@ -132,25 +172,32 @@ percent-encode any special character in the password (e.g. `@` → `%40`).
 production — already set on the deployed Render service) for the frontend
 to call this API from the browser.
 
-## Deployment
+## Admin operations and security (Phase 6)
 
-Deployed on Render (free-tier web service, Frankfurt region):
-**https://prepband-backend.onrender.com**. Continuous deployment is
-connected to this repo's `main` branch (`PrepBand/Prepband-backend` on
-GitHub) — a push to `main` triggers a build and redeploy automatically.
-Build: `pip install -r requirements.txt`. Start:
-`uvicorn app.main:app --host 0.0.0.0 --port $PORT`. `PYTHON_VERSION` is
-pinned via a Render env var (currently `3.12.7`) rather than riding
-Render's own default, since a prior default bump (to Python 3.14) broke
-the build — `psycopg[binary]` had no wheel for it yet.
+- **Audit trail:** every admin write, sensitive read and refused admin access
+  is recorded by one middleware (`app/services/audit.py`) in the append-only
+  `admin_audit_log` table (migration 0009). `GET /admin/audit` lists it.
+- **Bulk and CSV:** `POST /admin/tests/bulk`, `PATCH /admin/sections/{id}/questions/bulk`,
+  `GET /admin/sections/{id}/questions.csv`, `POST /admin/sections/{id}/questions/import-csv`
+  (all-or-nothing, validated like the editor).
+- **Analytics:** `GET /admin/tests/{id}/analytics` (per-question correct rate,
+  skips, common wrong answers) and `GET /admin/analytics` (activity by module/week).
+- **Limits and headers:** per-account rate limits on starting, saving and
+  submitting attempts and on bulk admin calls (`app/services/rate_limit.py`);
+  bodies over 2 MB get 413; security headers and `Cache-Control: no-store` on
+  every API response; unexpected errors return a generic 500 with a correlation id.
+- **Readiness:** `GET /health/ready` checks the database (used by the smoke test).
+- **API docs:** `/docs` outside production; `python -m scripts.export_openapi`
+  writes `docs/openapi.json`.
 
-## Before touching any external service
+## Operations
 
-The user works on other, unrelated projects through the same connected
-MCP/plugin accounts (GitHub, Render, Cloudflare, Supabase, Resend, Netlify,
-etc.). **Before any write/mutating call through one of those services:
-confirm the resource is actually named for Prepband, then get the user's
-explicit approval for that specific action** — there are no standing
-exceptions for any of these services. See `../CLAUDE.md`'s "Cross-project
-safety rule" and `../rules.md` for the full rule. If you can't confirm the
-resource is Prepband's own, make no change and ask instead of guessing.
+- [`docs/RUNBOOK.md`](docs/RUNBOOK.md): environment audit, release order, CSP,
+  rollback, backups/restore, quota monitoring, incidents.
+- [`docs/ADMIN_GUIDE.md`](docs/ADMIN_GUIDE.md): writing and publishing content.
+- `python -m scripts.smoke_test`: read-only check of the deployed apps.
+- `python -m scripts.backup`: pg_dump + every test as JSON into `backups/` (gitignored).
+
+## License
+
+MIT. See [`LICENSE`](LICENSE). Contributions: [`CONTRIBUTING.md`](CONTRIBUTING.md).

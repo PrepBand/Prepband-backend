@@ -9,14 +9,49 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    # A real Postgres for tests/postgres: triggers, row-level security,
+    # grants and row locks, which the SQLite tests can't run (ADR-003).
+    # Same major version as the Supabase project.
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_PASSWORD: postgres
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 5s --health-timeout 5s --health-retries 10
+    env:
+      TEST_DATABASE_URL: postgresql://postgres:postgres@localhost:5432/postgres
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # full history for the secret scan
 
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
 
-      - run: pip install -r requirements.txt
+      - run: pip install -r requirements.txt -r requirements-dev.txt
+
+      - name: Lint
+        run: python -m ruff check .
 
       - name: Import sanity check
         run: python -c "from app.main import app; print('app import OK')"
+
+      # API tests on SQLite, plus tests/postgres against the service above
+      # (every migration applied from scratch, then the database's own rules
+      # checked). No secrets or network needed.
+      - name: Tests
+        run: python -m pytest
+
+      # Known vulnerabilities in runtime dependencies (spec 12.1 "Security").
+      - name: Dependency audit
+        run: pip install pip-audit && pip-audit -r requirements.txt
+
+      # Scenario 16: no secrets in git history.
+      - name: Secret scan
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
