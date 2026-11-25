@@ -24,6 +24,15 @@ class Settings(BaseSettings):
         "https://ztiuocjlthzvuonvwjzm.supabase.co/auth/v1/.well-known/jwks.json"
     )
 
+    # Private Cloudflare R2 bucket for the resource library (covers and
+    # files). Server-only secrets: the API signs short-lived URLs with them,
+    # so the bucket never needs to be public. Until they're set, resource
+    # uploads return a clear 503 and file links can't be opened.
+    r2_account_id: str | None = None
+    r2_access_key_id: str | None = None
+    r2_secret_access_key: str | None = None
+    r2_resources_bucket: str | None = None
+
     cors_allowed_origins: str = "http://localhost:5180"
     frontend_url: str = "http://localhost:5180"
     log_level: str = "INFO"

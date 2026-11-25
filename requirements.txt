@@ -1,7 +1,11 @@
-fastapi==0.115.5
+fastapi==0.162.5
 uvicorn[standard]==0.32.1
 sqlmodel==0.0.22
 psycopg[binary]==3.2.13
 pyjwt[crypto]==2.10.1
 pydantic-settings==2.6.1
-python-dotenv==1.0.1
+python-dotenv==1.2.4
+reportlab==4.5.1
+# Pulled in by reportlab; pinned past its 2026 CVEs. Pillow 13 needs
+# Python 3.11+, which Render (PYTHON_VERSION=3.12.7) and CI both use.
+pillow>=13.0.0; python_version >= "3.11"

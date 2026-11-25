@@ -1,6 +1,6 @@
 from uuid import UUID
 
-from fastapi import Depends, HTTPException
+from fastapi import Depends, HTTPException, Request
 from sqlmodel import Session
 
 from ..db.session import get_session
@@ -18,14 +18,23 @@ def get_current_role(
     return role_row.role if role_row else "student"
 
 
-def require_admin(role: str = Depends(get_current_role)) -> str:
+def require_admin(
+    request: Request,
+    user_id: str = Depends(get_current_user_id),
+    role: str = Depends(get_current_role),
+) -> str:
     """Gate for admin-only routes.
 
     Per spec section 9: admin role can never be self-assigned from the
     client - user_roles has no client-writable insert/update policy at all,
     so the only way this check passes is a row set directly via SQL.
+
+    It also tells the audit middleware (app/services/audit.py) who is
+    acting, so every admin write - and every refused attempt - is logged.
     """
 
+    request.state.audit_actor_id = user_id
+    request.state.audit_actor_role = role
     if role not in ("admin", "super_admin"):
         raise HTTPException(status_code=403, detail="Admin role required.")
     return role
