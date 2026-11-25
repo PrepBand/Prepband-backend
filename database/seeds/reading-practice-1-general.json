@@ -1,0 +1,46 @@
+{
+  "format": "prepband-test/v1",
+  "title": "General Training Reading Practice: Renting Your First Flat",
+  "module": "reading",
+  "track": "general",
+  "kind": "practice",
+  "difficulty": "foundation",
+  "duration_minutes": 20,
+  "sections": [
+    {
+      "module": "reading",
+      "instructions": "Questions 1-12. Questions 1-6: choose TRUE, FALSE or NOT GIVEN. Questions 7-12: complete the notes with NO MORE THAN TWO WORDS from the text.",
+      "timing_seconds": 1200,
+      "passages": [
+        {
+          "title": "Renting Your First Flat: A Guide from Northgate Housing Advice",
+          "source": "Original Prepband text",
+          "license": "CC BY 4.0",
+          "attribution": "Prepband content team",
+          "body": [
+            "Before you start looking. Work out how much you can afford each month. As a general rule, your rent should be no more than about a third of your income after tax. Remember to include the cost of energy, water, internet and council tax, which are usually paid separately from the rent.",
+            "Viewing a property. Always visit a flat in person before agreeing to rent it, and try to go in daylight. Check that windows open and lock properly, run the taps to test the water pressure, and look for signs of damp, such as dark marks on walls or a musty smell. If possible, speak to the current tenants, who can often tell you more than the landlord.",
+            "The deposit. Most landlords ask for a deposit, which is returned at the end of the tenancy if the flat is left in good condition. By law, your landlord must place the deposit in a government-approved protection scheme within thirty days and give you details of the scheme. The deposit cannot be more than five weeks' rent.",
+            "The tenancy agreement. Read the agreement carefully before you sign. It should state the rent, how often it is paid, how long the tenancy lasts and who is responsible for repairs. Ask for anything that was promised verbally, such as new furniture, to be added in writing.",
+            "Moving in. Take dated photographs of every room on the day you move in, and keep a copy of the inventory, the list of furniture and its condition. This evidence is very useful if there is a disagreement about the deposit when you leave. Take meter readings for gas and electricity on the first day, too.",
+            "Problems during the tenancy. Report any repairs to your landlord in writing, by email or letter, and keep a record. Landlords are responsible for major repairs, such as heating, plumbing and the structure of the building. Tenants are usually expected to deal with minor tasks, such as changing light bulbs. If your landlord does not respond, contact our advice line, which is free and open six days a week."
+          ]
+        }
+      ],
+      "questions": [
+        {"type": "true_false_not_given", "prompt": "Rent should usually be less than about a third of take-home pay.", "marks": 1, "answer": {"correct_answers": "True", "rationale": "'No more than about a third of your income after tax.'"}},
+        {"type": "true_false_not_given", "prompt": "Energy bills are normally included in the rent.", "marks": 1, "answer": {"correct_answers": "False", "rationale": "They 'are usually paid separately from the rent'."}},
+        {"type": "true_false_not_given", "prompt": "It is best to view a flat after dark.", "marks": 1, "answer": {"correct_answers": "False", "rationale": "'Try to go in daylight.'"}},
+        {"type": "true_false_not_given", "prompt": "Current tenants are required to show visitors around.", "marks": 1, "answer": {"correct_answers": "Not Given", "rationale": "The guide suggests speaking to them, but says nothing about a requirement."}},
+        {"type": "true_false_not_given", "prompt": "A landlord can ask for a deposit equal to two months' rent.", "marks": 1, "answer": {"correct_answers": "False", "rationale": "The deposit 'cannot be more than five weeks' rent'."}},
+        {"type": "true_false_not_given", "prompt": "Tenants are usually responsible for changing light bulbs.", "marks": 1, "answer": {"correct_answers": "True", "rationale": "Tenants deal with minor tasks 'such as changing light bulbs'."}},
+        {"type": "note_completion", "prompt": "Signs of damp include dark marks or a ___.", "marks": 1, "answer": {"correct_answers": ["musty smell"], "rationale": "'Dark marks on walls or a musty smell.'"}},
+        {"type": "note_completion", "prompt": "The deposit must be placed in a protection scheme within ___.", "marks": 1, "answer": {"correct_answers": ["thirty days"], "accepted_aliases": ["30 days"], "rationale": "'Within thirty days.'"}},
+        {"type": "note_completion", "prompt": "Verbal promises should be added to the agreement ___.", "marks": 1, "answer": {"correct_answers": ["in writing"], "rationale": "'Ask for anything that was promised verbally... to be added in writing.'"}},
+        {"type": "note_completion", "prompt": "Keep a copy of the ___, which lists the furniture and its condition.", "marks": 1, "answer": {"correct_answers": ["inventory"], "rationale": "'The inventory, the list of furniture and its condition.'"}},
+        {"type": "note_completion", "prompt": "On the first day, take ___ for gas and electricity.", "marks": 1, "answer": {"correct_answers": ["meter readings"], "rationale": "'Take meter readings for gas and electricity on the first day.'"}},
+        {"type": "note_completion", "prompt": "The advice line is open ___ a week.", "marks": 1, "answer": {"correct_answers": ["six days"], "accepted_aliases": ["6 days"], "rationale": "'Free and open six days a week.'"}}
+      ]
+    }
+  ]
+}

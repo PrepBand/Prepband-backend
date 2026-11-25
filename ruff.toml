@@ -1,0 +1,18 @@
+# Backend lint (spec 13.1 "backend lint"). Run: python -m ruff check .
+line-length = 140
+target-version = "py312"
+extend-exclude = [".venv", "database", "supabase"]
+
+[lint]
+# Errors, pyflakes, import order, bugbear, upgrade hints and security checks.
+select = ["E", "F", "W", "I", "B", "UP", "S"]
+ignore = [
+  "B008",  # FastAPI's Depends() in defaults is the intended pattern
+  "S101",  # assert is fine in tests
+  "E501",  # long lines are handled by line-length where it matters
+  "UP017", # datetime.timezone.utc is clearer than datetime.UTC here
+]
+
+[lint.per-file-ignores]
+"tests/*" = ["S", "B"]
+"scripts/*" = ["S603", "S607"]

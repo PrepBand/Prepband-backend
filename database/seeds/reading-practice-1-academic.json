@@ -1,0 +1,47 @@
+{
+  "format": "prepband-test/v1",
+  "title": "Academic Reading Practice: The Glass Sponge",
+  "module": "reading",
+  "track": "academic",
+  "kind": "practice",
+  "difficulty": "intermediate",
+  "duration_minutes": 20,
+  "sections": [
+    {
+      "module": "reading",
+      "instructions": "Questions 1-13. Questions 1-6: choose TRUE, FALSE or NOT GIVEN. Questions 7-10: choose the correct answer. Questions 11-13: complete the sentences with ONE WORD from the passage.",
+      "timing_seconds": 1200,
+      "passages": [
+        {
+          "title": "The Glass Sponge",
+          "source": "Original Prepband text",
+          "license": "CC BY 4.0",
+          "attribution": "Prepband content team",
+          "body": [
+            "In the cold, dark water of the deep ocean, hundreds of metres below the surface, lives an animal that engineers have spent decades trying to understand. The glass sponge has no brain, no muscles and no organs. It spends its life fixed to the sea floor, filtering tiny particles of food from the water. Yet its skeleton, made almost entirely of silica, the same material as window glass, is one of the most impressive structures found in nature.",
+            "Ordinary glass is strong but brittle: a small crack can spread through it in an instant. The glass sponge avoids this problem through its structure. Its skeleton is built from thin glass fibres, each made of many fine layers separated by a thin film of protein. When a crack begins in one layer, it is stopped by the protein film before it can reach the next. As a result, the fibres are many times tougher than a solid rod of glass of the same size.",
+            "The fibres are arranged in a square grid, strengthened by diagonal supports that cross every other square. Researchers who modelled this pattern found that it gives the greatest resistance to bending for the smallest amount of material. Interestingly, the same idea had been used by engineers long before the sponge was studied: several nineteenth-century bridges used a very similar arrangement of diagonal bracing.",
+            "Some species of glass sponge produce long fibres at their base that anchor them in soft sediment. These fibres can transmit light, much like the optical fibres used in telecommunications. Unlike manufactured optical fibres, which must be produced at extremely high temperatures, the sponge builds its fibres at the temperature of the surrounding seawater, only a few degrees above freezing. Materials scientists hope that understanding this process could lead to cheaper, lower-energy ways of producing glass.",
+            "The sponges themselves are extremely long-lived. One specimen found in the East China Sea was estimated to be more than eleven thousand years old, which would make it one of the oldest known animals. Reefs built by glass sponges were once thought to have disappeared millions of years ago, until living reefs were discovered off the coast of Canada in the 1980s.",
+            "These reefs are now protected, but they remain vulnerable. Because the sponges grow very slowly, damage caused by fishing nets dragged across the sea floor can take centuries to recover. Scientists are also concerned that warmer and more acidic oceans may make it harder for sponges to build their skeletons, although this has not yet been confirmed in the field."
+          ]
+        }
+      ],
+      "questions": [
+        {"type": "true_false_not_given", "prompt": "The glass sponge is able to move across the sea floor.", "marks": 1, "answer": {"correct_answers": "False", "rationale": "'It spends its life fixed to the sea floor.'"}},
+        {"type": "true_false_not_given", "prompt": "The sponge's skeleton is made of a similar material to window glass.", "marks": 1, "answer": {"correct_answers": "True", "rationale": "Silica is 'the same material as window glass'."}},
+        {"type": "true_false_not_given", "prompt": "Layers of protein prevent cracks from spreading through the fibres.", "marks": 1, "answer": {"correct_answers": "True", "rationale": "A crack 'is stopped by the protein film before it can reach the next' layer."}},
+        {"type": "true_false_not_given", "prompt": "Engineers copied the sponge's grid pattern when designing nineteenth-century bridges.", "marks": 1, "answer": {"correct_answers": "False", "rationale": "Engineers used the idea 'long before the sponge was studied'."}},
+        {"type": "true_false_not_given", "prompt": "Glass sponge fibres carry light more efficiently than manufactured optical fibres.", "marks": 1, "answer": {"correct_answers": "Not Given", "rationale": "The fibres transmit light, but their efficiency is never compared."}},
+        {"type": "true_false_not_given", "prompt": "Living glass sponge reefs were discovered in the 1980s.", "marks": 1, "answer": {"correct_answers": "True", "rationale": "'Living reefs were discovered off the coast of Canada in the 1980s.'"}},
+        {"type": "multiple_choice", "prompt": "Why are the sponge's fibres tougher than a solid glass rod?", "options": ["They are thicker.", "They are made of many separated layers.", "They contain no silica."], "marks": 1, "answer": {"correct_answers": "They are made of many separated layers.", "rationale": "Fine layers separated by protein stop cracks spreading."}},
+        {"type": "multiple_choice", "prompt": "What did researchers find about the sponge's grid pattern?", "options": ["It uses material very efficiently.", "It is weaker than modern designs.", "It only appears in old sponges."], "marks": 1, "answer": {"correct_answers": "It uses material very efficiently.", "rationale": "Greatest resistance to bending 'for the smallest amount of material'."}},
+        {"type": "multiple_choice", "prompt": "Materials scientists are interested in the sponge because it", "options": ["can repair broken glass.", "makes glass at low temperatures.", "produces glass very quickly."], "marks": 1, "answer": {"correct_answers": "makes glass at low temperatures.", "rationale": "It builds fibres at near-freezing seawater temperatures, unlike high-temperature manufacturing."}},
+        {"type": "multiple_choice", "prompt": "What is the main threat to glass sponge reefs mentioned in the passage?", "options": ["Fishing nets", "Pollution from ships", "Predators"], "marks": 1, "answer": {"correct_answers": "Fishing nets", "rationale": "Nets dragged across the sea floor cause damage that takes centuries to recover. Ocean change is a concern, but unconfirmed."}},
+        {"type": "sentence_completion", "prompt": "Glass sponges feed by ___ small particles from the water.", "marks": 1, "answer": {"correct_answers": ["filtering"], "rationale": "'Filtering tiny particles of food from the water.'"}},
+        {"type": "sentence_completion", "prompt": "Long fibres at the base of some species ___ them in soft sediment.", "marks": 1, "answer": {"correct_answers": ["anchor"], "rationale": "'Long fibres at their base that anchor them in soft sediment.'"}},
+        {"type": "sentence_completion", "prompt": "Damage to reefs is slow to recover because the sponges ___ very slowly.", "marks": 1, "answer": {"correct_answers": ["grow"], "rationale": "'Because the sponges grow very slowly.'"}}
+      ]
+    }
+  ]
+}

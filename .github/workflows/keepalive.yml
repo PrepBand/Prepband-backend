@@ -1,0 +1,26 @@
+# Supabase's free plan pauses a project after about a week with no database
+# activity. /health/ready runs `select 1`, so one call a day keeps the
+# project awake (and wakes Render as a side effect). Uses ~2 Actions
+# minutes a month. Set the repository variable PREPBAND_API_URL to change
+# the target.
+name: keepalive
+
+on:
+  schedule:
+    - cron: "17 6 * * *"
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Ping the readiness check
+        env:
+          API_URL: ${{ vars.PREPBAND_API_URL || 'https://prepband-backend.onrender.com' }}
+        run: |
+          # Render can take ~40 s to wake; allow retries before failing.
+          curl --fail --silent --show-error --retry 5 --retry-delay 20 --retry-all-errors \
+            --max-time 90 "$API_URL/api/v1/health/ready"

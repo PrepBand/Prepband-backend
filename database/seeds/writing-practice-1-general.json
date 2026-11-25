@@ -1,0 +1,27 @@
+{
+  "format": "prepband-test/v1",
+  "title": "General Training Writing Practice: Task 1 Letter",
+  "module": "writing",
+  "track": "general",
+  "kind": "practice",
+  "difficulty": "foundation",
+  "duration_minutes": 20,
+  "sections": [
+    {
+      "module": "writing",
+      "instructions": "Spend about 20 minutes on this task.",
+      "timing_seconds": 1200,
+      "writing_prompts": [
+        {
+          "task_number": 1,
+          "prompt": "Your neighbour has been playing loud music late at night. Write a letter to your neighbour. In your letter:\n- describe the problem\n- explain how it is affecting you\n- suggest a solution\n\nBegin your letter: Dear ...,",
+          "instructions": "Write at least 150 words. You do NOT need to write any addresses.",
+          "min_words": 150,
+          "recommended_minutes": 20,
+          "letter_format": true,
+          "examiner_notes": "A neighbour letter can be friendly but should stay polite. A strong answer covers all three points, gives specific details (which nights, what time) and suggests a realistic solution, ending with an informal sign-off such as 'Best wishes'."
+        }
+      ]
+    }
+  ]
+}

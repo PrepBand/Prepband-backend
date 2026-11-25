@@ -1,0 +1,158 @@
+{
+  "format": "prepband-test/v1",
+  "title": "Speaking Mock Test 1",
+  "module": "speaking",
+  "track": "both",
+  "kind": "mock",
+  "difficulty": "intermediate",
+  "duration_minutes": 20,
+  "sections": [
+    {
+      "module": "speaking",
+      "instructions": "Part 1 (4-5 minutes). The examiner asks general questions about familiar topics. Answer each question in a few sentences.",
+      "timing_seconds": 300,
+      "speaking_prompts": [
+        {
+          "part": 1,
+          "prompt": "Do you live in a house or a flat?",
+          "speak_seconds": 30,
+          "follow_ups": [
+            {
+              "text": "How long have you lived there?"
+            },
+            {
+              "text": "Would you like to live somewhere different in the future?"
+            }
+          ]
+        },
+        {
+          "part": 1,
+          "prompt": "What do you like most about the area where you live?",
+          "speak_seconds": 30,
+          "follow_ups": [
+            {
+              "text": "Is there anything you would change about it?"
+            }
+          ]
+        },
+        {
+          "part": 1,
+          "prompt": "What is the busiest part of your day?",
+          "speak_seconds": 30,
+          "follow_ups": [
+            {
+              "text": "How do you usually feel at that time of day?"
+            }
+          ]
+        },
+        {
+          "part": 1,
+          "prompt": "Do you prefer mornings or evenings? Why?",
+          "speak_seconds": 30,
+          "follow_ups": [
+            {
+              "text": "Was that the same when you were a child?"
+            }
+          ]
+        },
+        {
+          "part": 1,
+          "prompt": "Has your daily routine changed much in recent years?",
+          "speak_seconds": 30,
+          "follow_ups": [
+            {
+              "text": "Do you think it will change again soon?"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "module": "speaking",
+      "instructions": "Part 2 (3-4 minutes). You have one minute to prepare. You can make notes. Then speak for one to two minutes about the topic.",
+      "timing_seconds": 240,
+      "speaking_prompts": [
+        {
+          "part": 2,
+          "prompt": "Describe a skill you learned outside of school.",
+          "bullets": [
+            "what the skill is",
+            "how you learned it",
+            "how long it took to learn",
+            "and explain why this skill is useful to you"
+          ],
+          "prep_seconds": 60,
+          "speak_seconds": 120
+        },
+        {
+          "part": 2,
+          "prompt": "Do you still use this skill often?",
+          "speak_seconds": 20
+        }
+      ]
+    },
+    {
+      "module": "speaking",
+      "instructions": "Part 3 (4-5 minutes). The examiner asks more abstract questions linked to the Part 2 topic. Develop your answers with reasons and examples.",
+      "timing_seconds": 300,
+      "speaking_prompts": [
+        {
+          "part": 3,
+          "prompt": "Which skills do you think young people need most today?",
+          "speak_seconds": 60,
+          "follow_ups": [
+            {
+              "text": "Who should be responsible for teaching those skills?"
+            },
+            {
+              "text": "Are those skills different from the ones your parents needed?"
+            }
+          ]
+        },
+        {
+          "part": 3,
+          "prompt": "Is it better to learn a practical skill from a teacher or from online videos?",
+          "speak_seconds": 60,
+          "follow_ups": [
+            {
+              "text": "What are the limits of learning from videos?"
+            },
+            {
+              "text": "Can you think of a skill that is impossible to learn online?"
+            }
+          ]
+        },
+        {
+          "part": 3,
+          "prompt": "Why do some adults find it difficult to learn new things?",
+          "speak_seconds": 60,
+          "follow_ups": [
+            {
+              "text": "What could help them learn more easily?"
+            }
+          ]
+        },
+        {
+          "part": 3,
+          "prompt": "Should schools teach more practical skills, such as cooking or managing money?",
+          "speak_seconds": 60,
+          "follow_ups": [
+            {
+              "text": "Which subjects could be reduced to make time for them?"
+            }
+          ]
+        },
+        {
+          "part": 3,
+          "prompt": "How might the skills people need for work change in the next twenty years?",
+          "speak_seconds": 60,
+          "follow_ups": [
+            {
+              "text": "How can people prepare for those changes now?"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

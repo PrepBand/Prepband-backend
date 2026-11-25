@@ -14,3 +14,16 @@ __pycache__/
 .idea/
 .DS_Store
 Thumbs.db
+
+# Generated Listening audio (scripts/generate_listening_audio.ps1) - uploaded to R2, not committed
+database/seeds/audio/
+
+# Local database/content backups (scripts/backup.py) contain student data.
+backups/
+
+# Supabase CLI local state, tool caches and local test databases
+supabase/.temp/
+supabase/.branches/
+.ruff_cache/
+*.sqlite3-journal
+pgdata/

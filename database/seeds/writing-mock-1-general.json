@@ -1,0 +1,35 @@
+{
+  "format": "prepband-test/v1",
+  "title": "General Training Writing Mock Test 1",
+  "module": "writing",
+  "track": "general",
+  "kind": "mock",
+  "difficulty": "intermediate",
+  "duration_minutes": 60,
+  "sections": [
+    {
+      "module": "writing",
+      "instructions": "You have 60 minutes for both tasks. Spend about 20 minutes on Task 1 and 40 minutes on Task 2.",
+      "timing_seconds": 3600,
+      "writing_prompts": [
+        {
+          "task_number": 1,
+          "prompt": "You recently stayed at a hotel and left a valuable item in your room. Write a letter to the hotel manager. In your letter:\n- explain when you stayed at the hotel\n- describe the item you left behind\n- say how you would like the item to be returned to you\n\nBegin your letter: Dear Sir or Madam,",
+          "instructions": "Write at least 150 words. You do NOT need to write any addresses.",
+          "min_words": 150,
+          "recommended_minutes": 20,
+          "letter_format": true,
+          "examiner_notes": "A strong answer covers all three bullet points in full, uses a polite semi-formal tone throughout, and closes with a suitable sign-off such as 'Yours faithfully'. Details like dates, the room number and a clear description of the item make the purpose obvious."
+        },
+        {
+          "task_number": 2,
+          "prompt": "In many countries, people are working longer hours than in the past. What are the reasons for this? What effects does it have on individuals and families?",
+          "instructions": "Write at least 250 words. Give reasons for your answer and include relevant examples from your own knowledge or experience.",
+          "min_words": 250,
+          "recommended_minutes": 40,
+          "examiner_notes": "This is a two-part question: a strong answer explains reasons (for example, cost of living, job insecurity, technology blurring work and home) and effects (on health, relationships and childcare), giving each part roughly equal weight."
+        }
+      ]
+    }
+  ]
+}

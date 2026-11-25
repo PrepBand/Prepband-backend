@@ -9,14 +9,58 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    # A real Postgres for tests/postgres: triggers, row-level security,
+    # grants and row locks, which the SQLite tests can't run (ADR-003).
+    # Same major version as the Supabase project.
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_PASSWORD: postgres
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 5s --health-timeout 5s --health-retries 10
+    env:
+      TEST_DATABASE_URL: postgresql://postgres:postgres@localhost:5432/postgres
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # full history for the secret scan
 
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
 
-      - run: pip install -r requirements.txt
+      - run: pip install -r requirements.txt -r requirements-dev.txt
+
+      - name: Lint
+        run: python -m ruff check .
 
       - name: Import sanity check
         run: python -c "from app.main import app; print('app import OK')"
+
+      # API tests on SQLite, plus tests/postgres against the service above
+      # (every migration applied from scratch, then the database's own rules
+      # checked). No secrets or network needed.
+      - name: Tests
+        run: python -m pytest
+
+      # Known vulnerabilities in runtime dependencies (spec 12.1 "Security").
+      - name: Dependency audit
+        run: pip install pip-audit && pip-audit -r requirements.txt
+
+      # Scenario 16: no secrets in git history.
+      # Runs the gitleaks CLI directly: the gitleaks-action wrapper needs a
+      # license key for organization repos and targets the retired Node 20.
+      # Pinned version, checked against the release's published checksum.
+      - name: Secret scan
+        env:
+          GITLEAKS_VERSION: 8.30.1
+          GITLEAKS_SHA256: 551f6fc83ea457d62a0d98237cbad105af8d557003051f41f3e7ca7b3f2470eb
+        run: |
+          archive="gitleaks_${GITLEAKS_VERSION}_linux_x64.tar.gz"
+          curl -sSfL -o "$RUNNER_TEMP/$archive" "https://github.com/gitleaks/gitleaks/releases/download/v${GITLEAKS_VERSION}/$archive"
+          echo "${GITLEAKS_SHA256}  $RUNNER_TEMP/$archive" | sha256sum -c -
+          tar -xzf "$RUNNER_TEMP/$archive" -C "$RUNNER_TEMP" gitleaks
+          "$RUNNER_TEMP/gitleaks" git --redact --no-banner --exit-code 1 .
