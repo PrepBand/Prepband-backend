@@ -331,6 +331,13 @@ def test_readiness_check(client):
     assert response.status_code == 200 and response.json() == {"status": "ok", "database": "ok"}
 
 
+def test_health_checks_accept_head(client):
+    # Uptime monitors probe with HEAD; a 405 shows up as "down".
+    for path in ("/api/v1/health", "/api/v1/health/ready"):
+        response = client.head(path)
+        assert response.status_code == 200 and response.content == b""
+
+
 def test_unexpected_errors_never_leak_details(client, session, monkeypatch):
     from app.api.v1 import admin_ops
 

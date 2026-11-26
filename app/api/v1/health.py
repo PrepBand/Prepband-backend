@@ -7,14 +7,16 @@ from ...db.session import get_session
 router = APIRouter()
 
 
-@router.get("/health")
+# HEAD is allowed too: uptime monitors (UptimeRobot) probe with HEAD by
+# default, and a GET-only route answers 405, which they report as "down".
+@router.api_route("/health", methods=["GET", "HEAD"])
 def health() -> dict:
     """Liveness check. No auth, no DB, no secrets - safe to call unauthenticated."""
 
     return {"status": "ok"}
 
 
-@router.get("/health/ready")
+@router.api_route("/health/ready", methods=["GET", "HEAD"])
 def ready(session: Session = Depends(get_session)) -> dict:
     """Readiness: can this instance reach the database right now? Used by
     the frontend's "waking up the server" check and the deploy smoke test.
