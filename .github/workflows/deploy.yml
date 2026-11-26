@@ -1,0 +1,52 @@
+name: Deploy
+
+# Deploys to Render after CI passes on main (every merged pull request).
+# Uses the service's deploy hook, so it doesn't depend on Render's GitHub
+# integration. Setup: Render > prepband-backend > Settings > Deploy Hook,
+# copy the URL into the repository secret RENDER_DEPLOY_HOOK_URL, and turn
+# Render's own Auto-Deploy off so a merge isn't deployed twice.
+
+on:
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
+    branches: [main]
+  workflow_dispatch: # manual "Run workflow" button for a redeploy
+
+concurrency:
+  group: deploy-production
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    # Only after a successful CI run for a push to main (not a pull request).
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'push')
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - name: Trigger the Render deploy
+        env:
+          HOOK: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
+          SHA: ${{ github.event.workflow_run.head_sha || github.sha }}
+        run: |
+          if [ -z "$HOOK" ]; then
+            echo "::error::Set the RENDER_DEPLOY_HOOK_URL repository secret (Render > Settings > Deploy Hook)."
+            exit 1
+          fi
+          # ref= deploys exactly the commit CI tested.
+          curl -sSf -X POST "${HOOK}&ref=${SHA}" -o /dev/null
+          echo "Deploy of ${SHA} requested."
+
+      # Free-tier services sleep, and the first request after a deploy wakes
+      # it; this also confirms the new build answers.
+      - name: Wait for the new build to answer
+        run: |
+          for i in $(seq 1 40); do
+            if curl -sSf https://prepband-backend.onrender.com/api/v1/health -o /dev/null; then
+              echo "Health check OK."; exit 0
+            fi
+            sleep 15
+          done
+          echo "::warning::Health check didn't pass within 10 minutes; check the Render dashboard."
